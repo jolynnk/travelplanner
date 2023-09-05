@@ -4,16 +4,26 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const authRoutes = require("./src/routes/authRoutes");
 const activityRoutes = require("./src/routes/activityRoutes");
+const itineraryRoutes = require("./src/routes/itineraryRoutes");
+const cors = require("cors");
 
 const app = express();
 const port = process.env.PORT || 5004;
 
+const corsOptions = {
+  origin: "http://localhost:5173", // Update this to match your frontend origin
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, // Enable cookies or authorization headers if needed
+};
+
 // Middleware to parse JSON requests
 app.use(express.json());
+app.use(cors(corsOptions));
 
 // Your API routes for registration and login will go here
 app.use("/auth", authRoutes);
 app.use("/api", activityRoutes);
+app.use("/api", itineraryRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

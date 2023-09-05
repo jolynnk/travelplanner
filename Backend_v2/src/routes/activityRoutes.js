@@ -45,12 +45,13 @@ router.post("/activities", async (req, res) => {
     ratings,
     activity_type_name,
     cost,
+    image,
   } = req.body;
 
   try {
     const query = `
-        INSERT INTO Activity (title, description, district, opening_hours, address, ratings, activity_type_name, cost)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        INSERT INTO Activity (title, description, district, opening_hours, address, ratings, activity_type_name, cost, image)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
         RETURNING *;
       `;
 
@@ -63,6 +64,7 @@ router.post("/activities", async (req, res) => {
       ratings,
       activity_type_name,
       cost,
+      image,
     ]);
     res.json(newActivity.rows[0]);
   } catch (error) {
@@ -83,13 +85,14 @@ router.put("/activities/:id", async (req, res) => {
     ratings,
     activity_type_name,
     cost,
+    image,
   } = req.body;
 
   try {
     const query = `
         UPDATE Activity
-        SET title = $1, description = $2, district = $3, opening_hours = $4, address = $5, ratings = $6, activity_type_name = $7, cost = $8
-        WHERE activity_id = $9
+        SET title = $1, description = $2, district = $3, opening_hours = $4, address = $5, ratings = $6, activity_type_name = $7, cost = $8, image = $9
+        WHERE activity_id = $10
         RETURNING *;
       `;
 
