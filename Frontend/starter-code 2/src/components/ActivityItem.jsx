@@ -12,6 +12,8 @@ import React, { useState, useEffect } from "react";
 const ActivityItem = (props) => {
   return (
     <>
+    <br />
+    <br />
       <Card
         sx={{
           width: 400,

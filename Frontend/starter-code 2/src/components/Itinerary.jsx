@@ -1,10 +1,12 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Button from "@mui/material/Button";
 
 const Itinerary = () => {
   const locationRef = useRef();
-  const num_of_daysRef = useRef();
-  const titleRef = useRef();
+  const titleRefs = useRef([]);
+  const [activities, setActivities] = useState([]);
+  const [numOfDays, setNumOfDays] = useState(1); // Default to 1 day
+  const [itineraryTitle, setItineraryTitle] = useState(""); // Added state for itinerary title
 
   const createItinerary = async () => {
     try {
@@ -15,8 +17,8 @@ const Itinerary = () => {
         },
         body: JSON.stringify({
           location: locationRef.current.value,
-          num_of_days: num_of_daysRef.current.value,
-          title: titleRef.current.value,
+          num_of_days: numOfDays,
+          title: itineraryTitle, // Use the itineraryTitle state here
         }),
       });
 
@@ -30,6 +32,45 @@ const Itinerary = () => {
       console.log(error.message);
       alert("An error has occurred");
     }
+  };
+
+  //add code for adding activity to itinerary
+  const addActivity = (title, day) => {
+    // Create a new activity object with title and day information
+    const newActivity = { title, day };
+
+    // Add the new activity to the activities array
+    setActivities((prevActivities) => [...prevActivities, newActivity]);
+  };
+
+  const handleNumOfDaysChange = (event) => {
+    const selectedNumOfDays = parseInt(event.target.value, 10);
+    setNumOfDays(selectedNumOfDays);
+  };
+
+  const generateDayRows = () => {
+    const rows = [];
+    for (let day = 1; day <= numOfDays; day++) {
+      rows.push(
+        <div key={day}>
+          <h4>Day {day}</h4>
+          {/* Add activity creation form for each day here */}
+          <label>
+            Title:
+            <input ref={(el) => (titleRefs.current[day - 1] = el)} />
+          </label>
+          {/* Include other input fields for activity details */}
+          <Button
+            onClick={() => {
+              addActivity(titleRefs.current[day - 1].value, day);
+            }}
+          >
+            Add Activity for Day {day}
+          </Button>
+        </div>
+      );
+    }
+    return rows;
   };
 
   return (
@@ -49,16 +90,20 @@ const Itinerary = () => {
         <br />
         <label>
           Number of Days:
-          <select ref={num_of_daysRef} name="numberOfDays">
+          <select name="numberOfDays" onChange={handleNumOfDaysChange}>
             <option value="3">3</option>
             <option value="5">5</option>
             <option value="7">7</option>
+            {/* Add more options as needed */}
           </select>
         </label>
         <br />
         <label>
           Title of Itinerary
-          <input ref={titleRef}></input>
+          <input
+            value={itineraryTitle}
+            onChange={(e) => setItineraryTitle(e.target.value)} // Update the itineraryTitle state
+          />
         </label>
         <br />
         <Button
@@ -69,6 +114,10 @@ const Itinerary = () => {
           Create Itinerary
         </Button>
       </form>
+
+      {/* Display Activities */}
+      <h3>Activities</h3>
+      {generateDayRows()}
     </>
   );
 };
