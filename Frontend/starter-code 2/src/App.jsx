@@ -11,8 +11,7 @@ const App = () => {
     <Router>
       <NavBar></NavBar>
       <Routes>
-        <Route path="/" element={<Activity />} />
-        <Route path="/itinerary" element={<Itinerary />} />
+        <Route path="/" element={<Itinerary />} />
         <Route path="/smart-itinerary" element={<SmartItinerary />} />
       </Routes>
     </Router>

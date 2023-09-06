@@ -18,30 +18,40 @@ router.post("/itinerary", async (req, res) => {
       num_of_days,
       title,
     ]);
-    res.json(newItinerary.rows[0]);
+    const itinerary_id = newItinerary.rows[0].itinerary_id;
+
+    res.json({ itinerary_id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server Error" });
   }
 });
-//   try {
-//     const { location, num_of_days, title } = req.body;
 
-//     // Here, you can save this data to your database or perform other actions as needed
-//     // Replace this with your database logic
+//add activities to itinerary (USER)
+router.patch("/itinerary/update", async (req, res) => {
+  try {
+    const { itinerary_id, activity_id, day } = req.body;
 
-//     res.status(201).json({
-//       message: "Itinerary created successfully",
-//       location,
-//       num_of_days,
-//       title,
-//     });
-//   } catch (error) {
-//     console.error("Error creating itinerary:", error);
-//     res
-//       .status(500)
-//       .json({ error: "An error occurred while creating the itinerary" });
-//   }
-// });
+    // Perform database update here to insert the activity into the specified itinerary
+    const updateQuery = `
+      INSERT INTO ItineraryActivity (itinerary_id, activity_id, day)
+      VALUES ($1, $2, $3)
+    `;
+
+    // Execute the query with your PostgreSQL client
+    await pool.query(updateQuery, [itinerary_id, activity_id, day]);
+
+    res
+      .status(200)
+      .json({ message: "Activity added to itinerary successfully" });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({
+        message: "An error occurred while adding activity to the itinerary",
+      });
+  }
+});
 
 module.exports = router;

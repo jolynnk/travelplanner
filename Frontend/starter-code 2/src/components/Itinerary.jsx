@@ -1,13 +1,19 @@
-import React, { useRef, useState } from "react";
-import Button from "@mui/material/Button";
+import React, { useRef, useState, useEffect } from "react";
+import { Grid, Button } from "@mui/material";
+import ActivityItem from "./ActivityItem";
 
 const Itinerary = () => {
   const locationRef = useRef();
-  const titleRefs = useRef([]);
-  const [activities, setActivities] = useState([]);
-  const [numOfDays, setNumOfDays] = useState(1); // Default to 1 day
+  // const titleRefs = useRef([]);
+  // const [activities, setActivities] = useState([]);
+  const [numOfDays, setNumOfDays] = useState(3); // Default to 3 days
   const [itineraryTitle, setItineraryTitle] = useState(""); // Added state for itinerary title
+  const [isButtonClicked, setIsButtonClicked] = useState(false); // Track button click
+  const [itinerary_id, setitinerary_id] = useState(null); //newcode
 
+  const [activity, setActivity] = useState([]);
+
+  //create blank itinerary
   const createItinerary = async () => {
     try {
       const res = await fetch(import.meta.env.VITE_SERVER + "/api/itinerary", {
@@ -25,6 +31,8 @@ const Itinerary = () => {
       if (!res.ok) {
         alert("Error creating itinerary");
       } else {
+        const data = await res.json(); //newcode
+        setitinerary_id(data.itinerary_id); // Store the newly created itinerary_id. newcode
         alert("Itinerary created successfully");
         // You may want to refresh the activity list here or redirect to another page
       }
@@ -34,13 +42,21 @@ const Itinerary = () => {
     }
   };
 
-  //add code for adding activity to itinerary
-  const addActivity = (title, day) => {
-    // Create a new activity object with title and day information
-    const newActivity = { title, day };
+  //get all activities (USER and ADMIN)
+  const getActivities = async () => {
+    try {
+      const res = await fetch(import.meta.env.VITE_SERVER + "/api/activities");
+      const data = await res.json();
+      setActivity(data);
+      console.log(data);
 
-    // Add the new activity to the activities array
-    setActivities((prevActivities) => [...prevActivities, newActivity]);
+      if (!res.ok) {
+        alert("error fetching data");
+      }
+    } catch (error) {
+      console.log(error.message);
+      alert("an error has occurred");
+    }
   };
 
   const handleNumOfDaysChange = (event) => {
@@ -54,28 +70,20 @@ const Itinerary = () => {
       rows.push(
         <div key={day}>
           <h4>Day {day}</h4>
-          {/* Add activity creation form for each day here */}
-          <label>
-            Title:
-            <input ref={(el) => (titleRefs.current[day - 1] = el)} />
-          </label>
-          {/* Include other input fields for activity details */}
-          <Button
-            onClick={() => {
-              addActivity(titleRefs.current[day - 1].value, day);
-            }}
-          >
-            Add Activity for Day {day}
-          </Button>
+          <hr></hr>
         </div>
       );
     }
     return rows;
   };
 
+  useEffect(() => {
+    getActivities(); // Call the getActivities function to fetch activities
+  }, []);
+
   return (
     <>
-      <h3>Create a new trip</h3>
+      <h3>Create a new itinerary</h3>
       <form>
         <label>
           Location:
@@ -109,15 +117,44 @@ const Itinerary = () => {
         <Button
           onClick={() => {
             createItinerary();
+            setIsButtonClicked(true); // Set the button click state
           }}
         >
           Create Itinerary
         </Button>
       </form>
+      {/* Display Activities only when button is clicked */}
+      {isButtonClicked && (
+        <div>
+          <h3>Itinerary</h3>
+          <p>Location: {locationRef.current.value}</p>
+          <p>Itinerary Title: {itineraryTitle}</p>
+          {generateDayRows()}
+        </div>
+      )}
 
-      {/* Display Activities */}
-      <h3>Activities</h3>
-      {generateDayRows()}
+      {/* Update your Itinerary component to pass the numOfDays value to the
+      ActivityItem component: */}
+      <Grid container spacing={3} justifyContent="center" alignItems="center">
+        {activity.map((item) => (
+          <Grid item xs={12} sm={6} md={3} key={item.activity_id}>
+            <ActivityItem
+              activity_id={item.activity_id}
+              activity_type_name={item.activity_type_name}
+              image={item.image}
+              title={item.title}
+              description={item.description}
+              district={item.district}
+              address={item.address}
+              ratings={item.ratings}
+              opening_hours={item.opening_hours}
+              cost={item.cost}
+              numOfDays={numOfDays} // Pass numOfDays as a prop
+              itinerary_id={itinerary_id} //newcode
+            />
+          </Grid>
+        ))}
+      </Grid>
     </>
   );
 };

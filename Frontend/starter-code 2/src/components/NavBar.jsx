@@ -8,10 +8,7 @@ const NavBar = () => {
       <nav>
         <ul>
           <li>
-            <NavLink to="/">Activity</NavLink>
-          </li>
-          <li>
-            <NavLink to="/itinerary">My Trip</NavLink>
+            <NavLink to="/">Create Itinerary</NavLink>
           </li>
           <li>
             <NavLink to="/smart-itinerary">Smart Itinerary</NavLink>
