@@ -4,13 +4,11 @@ import ActivityItem from "./ActivityItem";
 
 const Itinerary = () => {
   const locationRef = useRef();
-  // const titleRefs = useRef([]);
-  // const [activities, setActivities] = useState([]);
-  const [numOfDays, setNumOfDays] = useState(3); // Default to 3 days
-  const [itineraryTitle, setItineraryTitle] = useState(""); // Added state for itinerary title
-  const [isButtonClicked, setIsButtonClicked] = useState(false); // Track button click
-  const [itinerary_id, setitinerary_id] = useState(null); //newcode
-
+  const titleRef = useRef();
+  const [numOfDays, setNumOfDays] = useState(3); //3 days as default
+  // const [itineraryTitle, setItineraryTitle] = useState(""); // Added state for itinerary title
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [itinerary_id, setitinerary_id] = useState(null);
   const [activity, setActivity] = useState([]);
   const [activitiesByDay, setActivitiesByDay] = useState({});
 
@@ -25,17 +23,16 @@ const Itinerary = () => {
         body: JSON.stringify({
           location: locationRef.current.value,
           num_of_days: numOfDays,
-          title: itineraryTitle, // Use the itineraryTitle state here
+          title: titleRef.current.value,
         }),
       });
 
       if (!res.ok) {
         alert("Error creating itinerary");
       } else {
-        const data = await res.json(); //newcode
-        setitinerary_id(data.itinerary_id); // Store the newly created itinerary_id. newcode
+        const data = await res.json();
+        setitinerary_id(data.itinerary_id); // Store the newly created itinerary_id
         alert("Itinerary created successfully");
-        // You may want to refresh the activity list here or redirect to another page
       }
     } catch (error) {
       console.log(error.message);
@@ -60,14 +57,17 @@ const Itinerary = () => {
     }
   };
 
+  //parseInt - built-in function to convert string into integer
+  //10 - parse event.target.value as a base-10 number (numbering system consisting of 10 digits)
   const handleNumOfDaysChange = (event) => {
     const selectedNumOfDays = parseInt(event.target.value, 10);
-    setNumOfDays(selectedNumOfDays);
+    setNumOfDays(selectedNumOfDays); //put parsed string into a state
   };
 
   const generateDayRows = () => {
     const rows = [];
     for (let day = 1; day <= numOfDays; day++) {
+      //loop from day 1 to selected no. of days. new div created with each loop
       rows.push(
         <div key={day}>
           <h4>Day {day}</h4>
@@ -79,13 +79,16 @@ const Itinerary = () => {
   };
 
   useEffect(() => {
-    getActivities(); // Call the getActivities function to fetch activities
+    getActivities();
   }, []);
 
   return (
     <>
       <div className="page-container">
-        <div className="itinerary-container" style={{ maxWidth: "500px", margin: "0 auto" }}>
+        <div
+          className="itinerary-container"
+          style={{ maxWidth: "500px", margin: "0 auto" }}
+        >
           <h3>Create a new itinerary</h3>
           <form>
             <label>
@@ -100,20 +103,20 @@ const Itinerary = () => {
             </label>
             <br />
             <label>
-              Number of Days:
+              Number of days:
               <select name="numberOfDays" onChange={handleNumOfDaysChange}>
                 <option value="3">3</option>
                 <option value="5">5</option>
                 <option value="7">7</option>
-                {/* Add more options as needed */}
               </select>
             </label>
             <br />
             <label>
-              Title of Itinerary
+              Itinerary name:
               <input
-                value={itineraryTitle}
-                onChange={(e) => setItineraryTitle(e.target.value)} // Update the itineraryTitle state
+                // value={itineraryTitle}
+                // onChange={(e) => setItineraryTitle(e.target.value)} // Update the itineraryTitle state
+                ref={titleRef}
               />
             </label>
             <br />
@@ -126,17 +129,24 @@ const Itinerary = () => {
               Create Itinerary
             </Button>
           </form>
+
           {/* Display Activities only when button is clicked */}
           {isButtonClicked && (
             <div>
-              <h3>Itinerary</h3>
+              <h3>My trip</h3>
               <p>Location: {locationRef.current.value}</p>
-              <p>Itinerary Title: {itineraryTitle}</p>
+              <p>Itinerary Title: {titleRef.current.value}</p>
+              {/* iterate thru array created by generateDayRows and creates div for each Day */}
               {generateDayRows().map((day, index) => (
                 <div key={index}>
                   <h4>{day}</h4>
+                  {/* checks for activities associated with respective day of the iteration, and displays them*/}
+                  {/* activitiesByDay - object holding info about activities organised by day */}
+                  {/* index + 1: JS index starts with 0, hence adjustment made to ensure it's checking the right day vs that of generateDayRows' iteration */}
+                  {/* ? - optional chaining (to safely access properties of an object). checks if there are activities for the day of index + 1, if none, will prevent code from breaking and return undefined */}
                   {activitiesByDay[index + 1]?.map(
                     (activity, activityIndex) => (
+                      // div created for each activity
                       <div key={activityIndex}>
                         <h5>{activity.title}</h5>
                         <p>Type: {activity.activity_type_name}</p>
@@ -153,8 +163,7 @@ const Itinerary = () => {
             </div>
           )}
         </div>
-        {/* Update your Itinerary component to pass the numOfDays value to the
-      ActivityItem component: */}
+
         <div className="activity-container">
           <Grid
             container
@@ -162,8 +171,16 @@ const Itinerary = () => {
             justifyContent="center"
             alignItems="center"
           >
+            {/* prop down activities to ActivityItem.jsx for display */}
             {activity.map((item) => (
-              <Grid item xs={12} sm={6} md={4} key={item.activity_id} className="activity-card">
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                key={item.activity_id}
+                className="activity-card"
+              >
                 <ActivityItem
                   activity_id={item.activity_id}
                   activity_type_name={item.activity_type_name}
@@ -175,8 +192,8 @@ const Itinerary = () => {
                   ratings={item.ratings}
                   opening_hours={item.opening_hours}
                   cost={item.cost}
-                  numOfDays={numOfDays} // Pass numOfDays as a prop
-                  itinerary_id={itinerary_id} //newcode
+                  numOfDays={numOfDays}
+                  itinerary_id={itinerary_id}
                   activitiesByDay={activitiesByDay}
                   setActivitiesByDay={setActivitiesByDay}
                 />
