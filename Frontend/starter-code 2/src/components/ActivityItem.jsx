@@ -10,10 +10,11 @@ import {
   MenuItem,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
-// import ActivityContext from "../context/ActivityContext";
+import DetailsModal from "./DetailsModal";
 
 const ActivityItem = (props) => {
   const [selectedDay, setSelectedDay] = useState(1); // Default to Day 1
+  const [showModal, setShowModal] = useState(false);
 
   const handleDayChange = (event) => {
     setSelectedDay(event.target.value);
@@ -94,10 +95,11 @@ const ActivityItem = (props) => {
           <CardMedia component="img" height="360" src={props.image} />
           <CardContent>
             <Typography variant="h5">{props.title}</Typography>
+            <Typography variant="body1">{props.activity_type_name}</Typography>
+            <Typography variant="body1">Price: {props.cost}</Typography>
             <Typography variant="body1">
               Neighbourhood: {props.district}
             </Typography>
-            <Typography variant="body1">Price: {props.cost}</Typography>
             <Button
               onClick={() => setShowModal(true)}
               variant="outlined"
@@ -139,6 +141,22 @@ const ActivityItem = (props) => {
           </CardContent>
         </CardActionArea>
       </Card>
+      {showModal && (
+        <DetailsModal
+          activity_id={props.activity_id}
+          activity_type_name={props.activity_type_name}
+          image={props.image}
+          title={props.title}
+          description={props.description}
+          district={props.district}
+          address={props.address}
+          ratings={props.ratings}
+          opening_hours={props.opening_hours}
+          cost={props.cost}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        ></DetailsModal>
+      )}
     </>
   );
 };
