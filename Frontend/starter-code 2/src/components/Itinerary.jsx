@@ -12,6 +12,7 @@ const Itinerary = () => {
   const [itinerary_id, setitinerary_id] = useState(null); //newcode
 
   const [activity, setActivity] = useState([]);
+  const [activitiesByDay, setActivitiesByDay] = useState({});
 
   //create blank itinerary
   const createItinerary = async () => {
@@ -83,78 +84,107 @@ const Itinerary = () => {
 
   return (
     <>
-      <h3>Create a new itinerary</h3>
-      <form>
-        <label>
-          Location:
-          <select ref={locationRef} name="location">
-            <option value="London">London</option>
-            <option value="Tokyo">Tokyo (coming soon)</option>
-            <option value="New York">New York (coming soon)</option>
-            <option value="Paris">Paris (coming soon)</option>
-            <option value="Singapore">Singapore (coming soon)</option>
-          </select>
-        </label>
-        <br />
-        <label>
-          Number of Days:
-          <select name="numberOfDays" onChange={handleNumOfDaysChange}>
-            <option value="3">3</option>
-            <option value="5">5</option>
-            <option value="7">7</option>
-            {/* Add more options as needed */}
-          </select>
-        </label>
-        <br />
-        <label>
-          Title of Itinerary
-          <input
-            value={itineraryTitle}
-            onChange={(e) => setItineraryTitle(e.target.value)} // Update the itineraryTitle state
-          />
-        </label>
-        <br />
-        <Button
-          onClick={() => {
-            createItinerary();
-            setIsButtonClicked(true); // Set the button click state
-          }}
-        >
-          Create Itinerary
-        </Button>
-      </form>
-      {/* Display Activities only when button is clicked */}
-      {isButtonClicked && (
-        <div>
-          <h3>Itinerary</h3>
-          <p>Location: {locationRef.current.value}</p>
-          <p>Itinerary Title: {itineraryTitle}</p>
-          {generateDayRows()}
+      <div className="page-container">
+        <div className="itinerary-container" style={{ maxWidth: "500px", margin: "0 auto" }}>
+          <h3>Create a new itinerary</h3>
+          <form>
+            <label>
+              Location:
+              <select ref={locationRef} name="location">
+                <option value="London">London</option>
+                <option value="Tokyo">Tokyo (coming soon)</option>
+                <option value="New York">New York (coming soon)</option>
+                <option value="Paris">Paris (coming soon)</option>
+                <option value="Singapore">Singapore (coming soon)</option>
+              </select>
+            </label>
+            <br />
+            <label>
+              Number of Days:
+              <select name="numberOfDays" onChange={handleNumOfDaysChange}>
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="7">7</option>
+                {/* Add more options as needed */}
+              </select>
+            </label>
+            <br />
+            <label>
+              Title of Itinerary
+              <input
+                value={itineraryTitle}
+                onChange={(e) => setItineraryTitle(e.target.value)} // Update the itineraryTitle state
+              />
+            </label>
+            <br />
+            <Button
+              onClick={() => {
+                createItinerary();
+                setIsButtonClicked(true); // Set the button click state
+              }}
+            >
+              Create Itinerary
+            </Button>
+          </form>
+          {/* Display Activities only when button is clicked */}
+          {isButtonClicked && (
+            <div>
+              <h3>Itinerary</h3>
+              <p>Location: {locationRef.current.value}</p>
+              <p>Itinerary Title: {itineraryTitle}</p>
+              {generateDayRows().map((day, index) => (
+                <div key={index}>
+                  <h4>{day}</h4>
+                  {activitiesByDay[index + 1]?.map(
+                    (activity, activityIndex) => (
+                      <div key={activityIndex}>
+                        <h5>{activity.title}</h5>
+                        <p>Type: {activity.activity_type_name}</p>
+                        <p>District: {activity.district}</p>
+                        <p>Opening Hours: {activity.opening_hours}</p>
+                        <p>Cost: {activity.cost}</p>
+                        <img src={activity.image} alt={activity.title} />
+                        <hr></hr>
+                      </div>
+                    )
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      )}
-
-      {/* Update your Itinerary component to pass the numOfDays value to the
+        {/* Update your Itinerary component to pass the numOfDays value to the
       ActivityItem component: */}
-      <Grid container spacing={3} justifyContent="center" alignItems="center">
-        {activity.map((item) => (
-          <Grid item xs={12} sm={6} md={3} key={item.activity_id}>
-            <ActivityItem
-              activity_id={item.activity_id}
-              activity_type_name={item.activity_type_name}
-              image={item.image}
-              title={item.title}
-              description={item.description}
-              district={item.district}
-              address={item.address}
-              ratings={item.ratings}
-              opening_hours={item.opening_hours}
-              cost={item.cost}
-              numOfDays={numOfDays} // Pass numOfDays as a prop
-              itinerary_id={itinerary_id} //newcode
-            />
+        <div className="activity-container">
+          <Grid
+            container
+            spacing={3}
+            justifyContent="center"
+            alignItems="center"
+          >
+            {activity.map((item) => (
+              <Grid item xs={12} sm={6} md={4} key={item.activity_id} className="activity-card">
+                <ActivityItem
+                  activity_id={item.activity_id}
+                  activity_type_name={item.activity_type_name}
+                  image={item.image}
+                  title={item.title}
+                  description={item.description}
+                  district={item.district}
+                  address={item.address}
+                  ratings={item.ratings}
+                  opening_hours={item.opening_hours}
+                  cost={item.cost}
+                  numOfDays={numOfDays} // Pass numOfDays as a prop
+                  itinerary_id={itinerary_id} //newcode
+                  activitiesByDay={activitiesByDay}
+                  setActivitiesByDay={setActivitiesByDay}
+                />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        </div>
+      </div>
     </>
   );
 };

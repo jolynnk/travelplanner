@@ -14,6 +14,7 @@ import React, { useState, useEffect } from "react";
 
 const ActivityItem = (props) => {
   const [selectedDay, setSelectedDay] = useState(1); // Default to Day 1
+  
 
   const handleDayChange = (event) => {
     setSelectedDay(event.target.value);
@@ -27,26 +28,44 @@ const ActivityItem = (props) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          itinerary_id: props.itinerary_id, // Pass the itineraryId prop
+          itinerary_id: props.itinerary_id,
           activity_id: props.activity_id,
-          day: selectedDay, // Use the selectedDay state
+          day: selectedDay,
         }),
       });
-
+  
       if (!res.ok) {
         alert("Error adding activity to itinerary");
       } else {
+        // Update activitiesByDay state based on the selected day
+        const updatedActivities = { ...props.activitiesByDay };
+  
+        if (!updatedActivities[selectedDay]) {
+          updatedActivities[selectedDay] = [];
+        }
+  
+        updatedActivities[selectedDay].push({
+          activity_type_name: props.activity_type_name,
+          title: props.title,
+          district: props.district,
+          opening_hours: props.opening_hours,
+          cost: props.cost,
+          image: props.image,
+        });
+  
+        props.setActivitiesByDay(updatedActivities);
+  
         alert("Activity added to itinerary successfully");
-        // You may want to refresh the UI to reflect the added activity
+  
+        // Reset the selected day to Day 1
+        setSelectedDay(1);
       }
     } catch (error) {
       console.log(error.message);
       alert("An error has occurred");
     }
-
-    // Reset the selected day to Day 1
-    setSelectedDay(1);
   };
+  
 
   // Generate an array of options from Day 1 to numOfDays
   const dayOptions = Array.from({ length: props.numOfDays }, (_, index) => ({

@@ -28,3 +28,32 @@ body {
   align-items: flex-start; /* You can adjust this alignment as needed */
 }
 
+/* Container for the entire page */
+.page-container {
+  display: flex;
+}
+
+/* Container for the itinerary */
+.itinerary-container {
+  flex: 1; /* Make the itinerary container take up remaining space */
+  padding: 20px; /* Add padding for spacing */
+  /* Add any other styles you want for the itinerary container */
+}
+
+/* Container for the activity cards on the right */
+.activity-container {
+  flex: 1;
+  padding: 20px; /* Add padding to the activity container */
+  overflow-y: auto; /* Enable vertical scrolling for activities */
+  max-height: 1000px; /* Set a maximum height for the activity container */
+}
+
+/* Style for each individual activity card */
+.activity-card {
+  margin-bottom: 20px; /* Add margin between activity cards */
+  padding: 10px; /* Add padding to each activity card */
+  border: 1px solid #ddd; /* Add a border for better separation */
+  background-color: #fff; /* Add a background color for clarity */
+}
+
+

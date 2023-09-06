@@ -1,5 +1,5 @@
 import React from "react";
-import Activity from "./components/Activity";
+// import Activity from "./components/Activity";
 import Itinerary from "./components/Itinerary";
 import SmartItinerary from "./components/SmartItinerary";
 import NavBar from "./components/NavBar";
