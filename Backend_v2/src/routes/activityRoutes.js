@@ -124,8 +124,13 @@ router.delete("/activities/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const query = "DELETE FROM Activity WHERE activity_id = $1 RETURNING *";
-    const deletedActivity = await pool.query(query, [id]);
+    // Step 1: Delete records from itineraryactivity
+    const deleteItineraryActivityQuery = "DELETE FROM itineraryactivity WHERE activity_id = $1";
+    await pool.query(deleteItineraryActivityQuery, [id]);
+
+    // Step 2: Delete the activity record from the activity table
+    const deleteActivityQuery = "DELETE FROM activity WHERE activity_id = $1 RETURNING *";
+    const deletedActivity = await pool.query(deleteActivityQuery, [id]);
 
     if (deletedActivity.rows.length === 0) {
       return res.status(404).json({ error: "Activity not found" });

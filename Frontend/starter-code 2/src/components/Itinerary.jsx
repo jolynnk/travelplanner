@@ -100,14 +100,28 @@ const Itinerary = () => {
         >
           <Typography
             variant="h5"
-            style={{ fontSize: "24px", marginBottom: "20px" }}
+            style={{
+              fontSize: "28px",
+              marginBottom: "20px",
+              color: "#4f6369",
+              fontWeight: "bold",
+            }}
           >
             Create a new itinerary
           </Typography>
           <form>
             <label>
               Location:
-              <select ref={locationRef} name="location">
+              <select
+                ref={locationRef}
+                name="location"
+                style={{
+                  width: "70%",
+                  padding: "5px",
+                  borderRadius: "5px",
+                  margin: "10px",
+                }}
+              >
                 <option value="London">London</option>
                 <option value="Tokyo">Tokyo (coming soon)</option>
                 <option value="New York">New York (coming soon)</option>
@@ -116,31 +130,54 @@ const Itinerary = () => {
               </select>
             </label>
             <br />
-            <label>
+            <label style={{ display: "block", marginBottom: "10px" }}>
               Number of days:
-              <select name="numberOfDays" onChange={handleNumOfDaysChange}>
+              <select
+                name="numberOfDays"
+                onChange={handleNumOfDaysChange}
+                style={{
+                  width: "35%",
+                  padding: "5px",
+                  borderRadius: "5px",
+                  margin: "10px",
+                }}
+              >
                 <option value="3">3</option>
                 <option value="5">5</option>
                 <option value="7">7</option>
               </select>
             </label>
-            <br />
             <label>
               Title:
               <input
                 // value={itineraryTitle}
                 // onChange={(e) => setItineraryTitle(e.target.value)} // Update the itineraryTitle state
-                ref={titleRef} name="title"
+                ref={titleRef}
+                name="title"
+                style={{
+                  width: "75%",
+                  padding: "5px",
+                  borderRadius: "5px",
+                  margin: "8px",
+                  border: "1px solid #ccc",
+                }}
               />
             </label>
             <br />
             <Button
+              variant="contained"
+              color="primary"
+              style={{
+                width: "63%",
+                backgroundColor: "#4f6369", // Change this color to your desired color
+                color: "white", // Text color
+              }}
               onClick={() => {
                 createItinerary();
                 setIsButtonClicked(true); // Set the button click state
               }}
             >
-              Create Itinerary
+              Create
             </Button>
           </form>
 
@@ -150,7 +187,12 @@ const Itinerary = () => {
               <br></br>
               <Typography
                 variant="h5"
-                style={{ fontSize: "24px", marginBottom: "20px" }}
+                style={{
+                  fontSize: "28px",
+                  marginBottom: "20px",
+                  color: "#4f6369",
+                  fontWeight: "bold",
+                }}
               >
                 My trip
               </Typography>

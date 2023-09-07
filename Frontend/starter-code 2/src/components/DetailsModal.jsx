@@ -55,17 +55,17 @@ const DetailsModal = (props) => {
               fontSize: "18px",
             }}
           >
-            {props.image}
-            {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
-							{props.image.map((img, idx) => (
-								<img
-									key={idx}
-									src={`/${img}`}
-									style={{ width: '300px', margin: '5px' }}
-								/>
-							))}
-						</div> */}
-
+            <br></br>
+            <img
+              src={props.image}
+              alt={props.title}
+              style={{
+                maxWidth: "20%",
+                height: "auto",
+                margin: "0 auto",
+                display: "block",
+              }}
+            />
             <br />
             <p>
               <strong>Description:</strong> {props.description}
@@ -74,14 +74,14 @@ const DetailsModal = (props) => {
               <strong>Price:</strong> {props.cost}
             </p>
             <p>
-              <strong>Category:</strong> {props.district}
+              <strong>Rating:</strong> {props.ratings}
             </p>
             <p>
-              <strong>Subcategory:</strong> {props.address}
+              <strong>Address:</strong> {props.address}
             </p>
-            <Button onClick={() => props.setShowModal(false)}>
+            {/* <Button onClick={() => props.setShowModal(false)}>
               ADD TO TRIP
-            </Button>
+            </Button> */}
           </Box>
         </DialogContent>
       </Dialog>
