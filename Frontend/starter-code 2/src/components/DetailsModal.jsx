@@ -79,7 +79,9 @@ const DetailsModal = (props) => {
             <p>
               <strong>Subcategory:</strong> {props.address}
             </p>
-            <Button onClick={() => props.setShowModal(false)}>ADD TO TRIP</Button>
+            <Button onClick={() => props.setShowModal(false)}>
+              ADD TO TRIP
+            </Button>
           </Box>
         </DialogContent>
       </Dialog>

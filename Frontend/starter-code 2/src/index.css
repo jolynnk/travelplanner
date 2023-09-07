@@ -1,11 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap");
-
 * {
   box-sizing: border-box;
 }
 
 html {
-  font-family: "Oxygen", sans-serif;
+  font-family: "Roboto" !important;
 }
 
 body {
@@ -54,6 +52,10 @@ body {
   padding: 10px; /* Add padding to each activity card */
   border: 1px solid #ddd; /* Add a border for better separation */
   background-color: #fff; /* Add a background color for clarity */
+}
+
+.roboto-font {
+  font-family: "Roboto", sans-serif;
 }
 
 

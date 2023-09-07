@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Grid, Button } from "@mui/material";
+import { Grid, Button, Input, Typography } from "@mui/material";
 import ActivityItem from "./ActivityItem";
 
 const Itinerary = () => {
@@ -70,7 +70,12 @@ const Itinerary = () => {
       //loop from day 1 to selected no. of days. new div created with each loop
       rows.push(
         <div key={day}>
-          <h4>Day {day}</h4>
+          <Typography
+            variant="h5"
+            style={{ fontSize: "20px", marginBottom: "20px" }}
+          >
+            Day {day}
+          </Typography>
           <hr></hr>
         </div>
       );
@@ -89,7 +94,12 @@ const Itinerary = () => {
           className="itinerary-container"
           style={{ maxWidth: "500px", margin: "0 auto" }}
         >
-          <h3>Create a new itinerary</h3>
+          <Typography
+            variant="h5"
+            style={{ fontSize: "24px", marginBottom: "20px" }}
+          >
+            Create a new itinerary
+          </Typography>
           <form>
             <label>
               Location:
@@ -112,8 +122,8 @@ const Itinerary = () => {
             </label>
             <br />
             <label>
-              Itinerary name:
-              <input
+              Title:
+              <Input
                 // value={itineraryTitle}
                 // onChange={(e) => setItineraryTitle(e.target.value)} // Update the itineraryTitle state
                 ref={titleRef}
@@ -133,13 +143,20 @@ const Itinerary = () => {
           {/* Display Activities only when button is clicked */}
           {isButtonClicked && (
             <div>
-              <h3>My trip</h3>
+              <br></br>
+              <Typography
+                variant="h5"
+                style={{ fontSize: "24px", marginBottom: "20px" }}
+              >
+                My trip
+              </Typography>
               <p>Location: {locationRef.current.value}</p>
-              <p>Itinerary Title: {titleRef.current.value}</p>
+              <p>Title: {titleRef.current.value}</p>
+              <br></br>
               {/* iterate thru array created by generateDayRows and creates div for each Day */}
               {generateDayRows().map((day, index) => (
                 <div key={index}>
-                  <h4>{day}</h4>
+                  <h5>{day}</h5>
                   {/* checks for activities associated with respective day of the iteration, and displays them*/}
                   {/* activitiesByDay - object holding info about activities organised by day */}
                   {/* index + 1: JS index starts with 0, hence adjustment made to ensure it's checking the right day vs that of generateDayRows' iteration */}
@@ -153,7 +170,11 @@ const Itinerary = () => {
                         <p>District: {activity.district}</p>
                         <p>Opening Hours: {activity.opening_hours}</p>
                         <p>Cost: {activity.cost}</p>
-                        <img src={activity.image} alt={activity.title} />
+                        <img
+                          src={activity.image}
+                          alt={activity.title}
+                          width="150px"
+                        />
                         <hr></hr>
                       </div>
                     )
