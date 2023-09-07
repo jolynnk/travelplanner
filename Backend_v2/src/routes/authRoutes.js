@@ -46,11 +46,11 @@ router.post("/login", async (req, res) => {
     }
 
     // Generate and send a JWT token for authentication
-    const token = jwt.sign({ userId: userRecord.id }, "your_secret_key", {
+    const token = jwt.sign({ userId: userRecord.id }, process.env.SECRET_KEY, {
       expiresIn: "1h",
     });
 
-    res.json({ token });
+    res.json({ id: userRecord.id, token }); //response to include token and user id
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server Error" });

@@ -6,6 +6,7 @@ const authRoutes = require("./src/routes/authRoutes");
 const activityRoutes = require("./src/routes/activityRoutes");
 const itineraryRoutes = require("./src/routes/itineraryRoutes");
 const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 5004;
