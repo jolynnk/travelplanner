@@ -13,6 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  //   const [authToken, setAuthToken] = useState("");
 
   const handleUserChange = (e) => {
     setUser(e.target.value);
@@ -40,6 +41,12 @@ const Login = () => {
       );
 
       if (response.ok) {
+        const data = await response.json();
+        const jwtToken = data.token; // Extract the JWT token from the response
+        // Store the token in a state, context, or local storage
+        // Example using state:
+        // Store the JWT token in localStorage (browser storage and be retrieved when needed - note potential security issues) to be used in itinerary.jsx (can also use usecontext)
+        localStorage.setItem("jwtToken", jwtToken);
         window.location.href = "/";
       } else {
         setError("Invalid email or password. Please try again.");

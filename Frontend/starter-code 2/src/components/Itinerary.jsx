@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Grid, Button, Input, Typography } from "@mui/material";
+import { Grid, Button, Typography } from "@mui/material";
 import ActivityItem from "./ActivityItem";
 
 const Itinerary = () => {
@@ -15,10 +15,14 @@ const Itinerary = () => {
   //create blank itinerary
   const createItinerary = async () => {
     try {
+      // Retrieve the JWT token from localStorage
+      const authToken = localStorage.getItem("jwtToken");
+
       const res = await fetch(import.meta.env.VITE_SERVER + "/api/itinerary", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify({
           location: locationRef.current.value,
@@ -123,10 +127,10 @@ const Itinerary = () => {
             <br />
             <label>
               Title:
-              <Input
+              <input
                 // value={itineraryTitle}
                 // onChange={(e) => setItineraryTitle(e.target.value)} // Update the itineraryTitle state
-                ref={titleRef}
+                ref={titleRef} name="title"
               />
             </label>
             <br />

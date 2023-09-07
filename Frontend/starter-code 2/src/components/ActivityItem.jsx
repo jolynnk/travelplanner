@@ -23,15 +23,18 @@ const ActivityItem = (props) => {
   //add activity to itinerary
   const addToTrip = async () => {
     try {
+      // Retrieve the JWT token from localStorage
+      const authToken = localStorage.getItem("jwtToken");
+
       const res = await fetch(
         import.meta.env.VITE_SERVER + "/api/itinerary/update",
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`, // Include the JWT token in the headers
           },
           body: JSON.stringify({
-            itinerary_id: props.itinerary_id, //id generated at creation of itinerary
             activity_id: props.activity_id,
             day: selectedDay, //the day that was selected in dropdown of activity (handleDayChangefunction)
           }),
