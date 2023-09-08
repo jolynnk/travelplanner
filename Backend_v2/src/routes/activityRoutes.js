@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../config/db"); // Import your PostgreSQL pool configuration
-const checkAdmin = require("../middleware/checkAdmin");
-const authMiddleware = require("../middleware/auth");
-const { check } = require("express-validator");
+// const checkAdmin = require("../middleware/checkAdmin");
+// const authMiddleware = require("../middleware/auth");
+// const { check } = require("express-validator");
 
 // Get a list of all activities (USER, ADMIN)
 router.get("/activities", async (req, res) => {
@@ -36,7 +36,7 @@ router.get("/activities/:id", async (req, res) => {
 });
 
 // Create a new activity (ADMIN)
-router.post("/activities", authMiddleware, checkAdmin, async (req, res) => {
+router.post("/activities", async (req, res) => {
   const {
     title,
     description,
@@ -75,7 +75,7 @@ router.post("/activities", authMiddleware, checkAdmin, async (req, res) => {
 });
 
 // Update an existing activity by ID (ADMIN)
-router.patch("/activities/:id", authMiddleware, checkAdmin, async (req, res) => {
+router.patch("/activities/:id", async (req, res) => {
   const { id } = req.params;
   const {
     title,
@@ -122,7 +122,7 @@ router.patch("/activities/:id", authMiddleware, checkAdmin, async (req, res) => 
 });
 
 // Delete an activity by ID (USER, ADMIN)
-router.delete("/activities/:id", authMiddleware, checkAdmin, async (req, res) => {
+router.delete("/activities/:id", async (req, res) => {
   const { id } = req.params;
 
   try {

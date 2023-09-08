@@ -1,9 +1,18 @@
 import { Grid, Button, List } from "@mui/material";
 import React, { useState, useEffect, useRef } from "react";
+import AdminUpdateModal from "./AdminUpdateModal";
 
 const AdminDashboard = () => {
   const [activity, setActivity] = useState([]);
   const [showAddActivityForm, setShowAddActivityForm] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedActivity, setSelectedActivity] = useState(null);
+  console.log(selectedActivity)
+
+//   const openUpdateModal = (activity) => {
+//     setSelectedActivity(activity);
+//     setShowModal(true);
+//   };
 
   //toggle visibility of add activity form
   const toggleAddActivityForm = () => {
@@ -94,46 +103,11 @@ const AdminDashboard = () => {
     }
   };
 
-  //update activity (ADMIN)
-  const updateActivity = async () => {
-    try {
-      const res = await fetch(
-        import.meta.env.VITE_SERVER + "/api/activities/:id",
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            activity_type_name: activity_type_nameRef.current.value,
-            title: titleRef.current.value,
-            description: descriptionRef.current.value,
-            district: districtRef.current.value,
-            address: addressRef.current.value,
-            ratings: ratingsRef.current.value,
-            opening_hours: opening_hoursRef.current.value,
-            cost: costRef.current.value,
-          }),
-        }
-      );
-
-      if (!res.ok) {
-        alert("Error updating activity");
-      } else {
-        alert("Activity updated successfully");
-        // You may want to refresh the activity list here or redirect to another page
-      }
-    } catch (error) {
-      console.log(error.message);
-      alert("An error has occurred");
-    }
-  };
-
   //delete activity (ADMIN)
-  const deleteActivity = async () => {
+  const deleteActivity = async (activity_id) => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_SERVER + "/api/activities/:id",
+        import.meta.env.VITE_SERVER + `/api/activities/${activity_id}`, // Use the activity_id to specify the activity to delete
         {
           method: "DELETE",
         }
@@ -143,6 +117,7 @@ const AdminDashboard = () => {
         alert("Error deleting activity");
       } else {
         alert("Activity deleted successfully");
+        // Refresh the activity list after deleting the activity
         getActivities();
       }
     } catch (error) {
@@ -224,12 +199,33 @@ const AdminDashboard = () => {
             <br />
             Cost: {item.cost}
             <br />
-            <Button>Update</Button>
-            <Button onClick={deleteActivity}>Delete</Button>
+            <Button onClick={() => { setShowModal(true); setSelectedActivity(item.activity_id); }}>Update</Button>
+            <Button onClick={() => deleteActivity(item.activity_id)}>
+              Delete
+            </Button>
             <hr></hr>
           </List>
         ))}
       </Grid>
+
+      {showModal && (
+        <AdminUpdateModal
+        //   activity_type_nameRef={activity_type_nameRef}
+        //   titleRef={titleRef}
+        //   descriptionRef={descriptionRef}
+        //   districtRef={districtRef}
+        //   addressRef={addressRef}
+        //   ratingsRef={ratingsRef}
+        //   opening_hoursRef={opening_hoursRef}
+        //   costRef={costRef}
+        //   imageRef={imageRef}
+        //   updateActivity={updateActivity}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          selectedActivity={selectedActivity} // Pass the selected activity data
+          getActivities={getActivities}
+        ></AdminUpdateModal>
+      )}
     </>
   );
 };
