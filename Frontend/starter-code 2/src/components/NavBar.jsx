@@ -19,6 +19,9 @@ const NavBar = () => {
           <li>
             <NavLink to="/registration">Sign up</NavLink>
           </li>
+          <li>
+            <NavLink to="/admin-dashboard">Admin Dashboard</NavLink>
+          </li>
         </ul>
       </nav>
     </header>

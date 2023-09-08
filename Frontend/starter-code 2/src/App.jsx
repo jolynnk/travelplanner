@@ -6,6 +6,7 @@ import Login from "./components/authentication/Login";
 import Registration from "./components/authentication/Registration";
 import NavBar from "./components/NavBar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import AdminDashboard from "./components/AdminDashboard";
 // import ActivityContext from "./context/ActivityContext";
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/smart-itinerary" element={<SmartItinerary />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );

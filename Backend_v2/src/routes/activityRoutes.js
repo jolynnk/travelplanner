@@ -1,8 +1,9 @@
-// routes/activityRoutes.js
-
 const express = require("express");
 const router = express.Router();
 const pool = require("../config/db"); // Import your PostgreSQL pool configuration
+const checkAdmin = require("../middleware/checkAdmin");
+const authMiddleware = require("../middleware/auth");
+const { check } = require("express-validator");
 
 // Get a list of all activities (USER, ADMIN)
 router.get("/activities", async (req, res) => {
@@ -35,7 +36,7 @@ router.get("/activities/:id", async (req, res) => {
 });
 
 // Create a new activity (ADMIN)
-router.post("/activities", async (req, res) => {
+router.post("/activities", authMiddleware, checkAdmin, async (req, res) => {
   const {
     title,
     description,
@@ -74,7 +75,7 @@ router.post("/activities", async (req, res) => {
 });
 
 // Update an existing activity by ID (ADMIN)
-router.put("/activities/:id", async (req, res) => {
+router.patch("/activities/:id", authMiddleware, checkAdmin, async (req, res) => {
   const { id } = req.params;
   const {
     title,
@@ -105,6 +106,7 @@ router.put("/activities/:id", async (req, res) => {
       ratings,
       activity_type_name,
       cost,
+      image,
       id,
     ]);
 
@@ -120,16 +122,18 @@ router.put("/activities/:id", async (req, res) => {
 });
 
 // Delete an activity by ID (USER, ADMIN)
-router.delete("/activities/:id", async (req, res) => {
+router.delete("/activities/:id", authMiddleware, checkAdmin, async (req, res) => {
   const { id } = req.params;
 
   try {
     // Step 1: Delete records from itineraryactivity
-    const deleteItineraryActivityQuery = "DELETE FROM itineraryactivity WHERE activity_id = $1";
+    const deleteItineraryActivityQuery =
+      "DELETE FROM itineraryactivity WHERE activity_id = $1";
     await pool.query(deleteItineraryActivityQuery, [id]);
 
     // Step 2: Delete the activity record from the activity table
-    const deleteActivityQuery = "DELETE FROM activity WHERE activity_id = $1 RETURNING *";
+    const deleteActivityQuery =
+      "DELETE FROM activity WHERE activity_id = $1 RETURNING *";
     const deletedActivity = await pool.query(deleteActivityQuery, [id]);
 
     if (deletedActivity.rows.length === 0) {
