@@ -3,8 +3,8 @@ const checkAdmin = (req, res, next) => {
   const user = req.user; // Assuming you have middleware to extract user info from the token
 
   // Log user information and role
-  console.log("req.user:", req.user);
-  console.log("user.role:", user.role);
+//   console.log("req.user:", req.user);
+//   console.log("user.role:", user.role);
 
   if (user && user.role.includes('admin')) {
     // User has the 'admin' role, allow them to proceed

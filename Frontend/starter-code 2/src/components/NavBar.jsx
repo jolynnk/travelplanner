@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 import styles from "./NavBar.module.css";
 
 const NavBar = () => {
+  const userRole = JSON.parse(localStorage.getItem("userRole")) || [];
+
   return (
     <header className={styles.navbar}>
       <nav>
@@ -19,9 +21,11 @@ const NavBar = () => {
           <li>
             <NavLink to="/registration">Sign up</NavLink>
           </li>
-          <li>
-            <NavLink to="/admin-dashboard">Admin Dashboard</NavLink>
-          </li>
+          {userRole.includes("admin") && ( // Conditionally render Admin Dashboard link
+            <li>
+              <NavLink to="/admin-dashboard">Admin Dashboard</NavLink>
+            </li>
+          )}
         </ul>
       </nav>
     </header>

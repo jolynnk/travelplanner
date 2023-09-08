@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material"; // Import icons for the show/hide toggle
 import React, { useState } from "react";
+import jwtDecode from "jwt-decode";
 
 const Login = () => {
   const [user, setUser] = useState("");
@@ -27,7 +28,11 @@ const Login = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+
+    console.log("handleLogin function is called"); // Add this line
+
     try {
       const response = await fetch(
         import.meta.env.VITE_SERVER + "/auth/login",
@@ -42,11 +47,25 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
+        console.log("Data from server:", data);
+
         const jwtToken = data.token; // Extract the JWT token from the response
         // Store the token in a state, context, or local storage
         // Example using state:
         // Store the JWT token in localStorage (browser storage and be retrieved when needed - note potential security issues) to be used in itinerary.jsx (can also use usecontext)
+
+        console.log("JWT Token:", jwtToken);
+
+        const decoded = jwtDecode(jwtToken);
+        console.log(decoded);
+
+        const userRole = data.role || [];
+        console.log("User Roles:", userRole);
+
         localStorage.setItem("jwtToken", jwtToken);
+        // Store the user role in localStorage
+        localStorage.setItem("userRole", JSON.stringify(decoded.role));
+
         window.location.href = "/";
       } else {
         setError("Invalid email or password. Please try again.");
@@ -106,7 +125,7 @@ const Login = () => {
           }}
         />
         <br></br>
-        <Button onClick={handleLogin}>Log in</Button>
+        <Button onClick={(e) => handleLogin(e)}>Log in</Button>
       </div>
     </>
   );

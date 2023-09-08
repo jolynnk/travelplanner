@@ -1,9 +1,18 @@
 import { Grid, Button, List } from "@mui/material";
 import React, { useState, useEffect, useRef } from "react";
-import ActivityItem from "./ActivityItem";
 
 const AdminDashboard = () => {
   const [activity, setActivity] = useState([]);
+  const [showAddActivityForm, setShowAddActivityForm] = useState(false);
+
+  //toggle visibility of add activity form
+  const toggleAddActivityForm = () => {
+    setShowAddActivityForm(!showAddActivityForm);
+  };
+
+  // Retrieve the user role from localStorage (default to "user" if not found)
+  const userRole = JSON.parse(localStorage.getItem("userRole")) || [];
+  console.log(userRole);
 
   const activity_type_nameRef = useRef();
   const titleRef = useRef();
@@ -13,6 +22,7 @@ const AdminDashboard = () => {
   const ratingsRef = useRef();
   const opening_hoursRef = useRef();
   const costRef = useRef();
+  const imageRef = useRef();
 
   //get all activities (ADMIN)
   const getActivities = async () => {
@@ -51,7 +61,9 @@ const AdminDashboard = () => {
   };
 
   //create activity (ADMIN)
-  const createActivity = async () => {
+  const createActivity = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+
     try {
       const res = await fetch(import.meta.env.VITE_SERVER + "/api/activities", {
         method: "POST",
@@ -67,6 +79,7 @@ const AdminDashboard = () => {
           ratings: ratingsRef.current.value,
           opening_hours: opening_hoursRef.current.value,
           cost: costRef.current.value,
+          image: imageRef.current.value,
         }),
       });
 
@@ -74,7 +87,6 @@ const AdminDashboard = () => {
         alert("Error creating activity");
       } else {
         alert("Activity created successfully");
-        // You may want to refresh the activity list here or redirect to another page
       }
     } catch (error) {
       console.log(error.message);
@@ -131,7 +143,7 @@ const AdminDashboard = () => {
         alert("Error deleting activity");
       } else {
         alert("Activity deleted successfully");
-        // You may want to refresh the activity list here or redirect to another page
+        getActivities();
       }
     } catch (error) {
       console.log(error.message);
@@ -145,24 +157,75 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <Button>Add Activity</Button>
+      <Button onClick={toggleAddActivityForm}>
+        {showAddActivityForm ? "Cancel" : "Add Activity"}
+      </Button>
+      {showAddActivityForm && (
+        <form>
+          <input
+            type="text"
+            placeholder="activity type"
+            ref={activity_type_nameRef}
+          ></input>
+          <br />
+          <input type="text" placeholder="name" ref={titleRef}></input>
+          <br />
+          <input
+            type="text"
+            placeholder="description"
+            ref={descriptionRef}
+          ></input>
+          <br />
+          <input
+            type="text"
+            placeholder="neighbourhood"
+            ref={districtRef}
+          ></input>
+          <br />
+          <input type="text" placeholder="address" ref={addressRef}></input>
+          <br />
+          <input type="text" placeholder="rating" ref={ratingsRef}></input>
+          <br />
+          <input
+            type="text"
+            placeholder="opening hours"
+            ref={opening_hoursRef}
+          ></input>
+          <br />
+          <input type="text" placeholder="cost" ref={costRef}></input>
+          <br />
+          <input type="text" placeholder="image" ref={imageRef}></input>
+          {userRole.includes("admin") && (
+            <Button onClick={(e) => createActivity(e)}>Submit</Button>
+          )}
+        </form>
+      )}
       <br></br>
       <hr></hr>
       <Grid container spacing={1} justifyContent="center" alignItems="center">
         {activity.map((item) => (
           <List item xs={10} sm={6} md={1} key={item.activity_id}>
             Activity ID: {item.activity_id} <br />
-            Activity Type: {item.activity_type_name}<br />
-            <img src={item.image} width="100px"/><br />
-            Name: {item.title}<br />
-            Description: {item.description}<br />
-            Neighbourhood: {item.district}<br />
-            Address: {item.address}<br />
-            Rating: {item.ratings}<br />
-            Opening Hours: {item.opening_hours}<br />
-            Cost: {item.cost}<br />
+            Activity Type: {item.activity_type_name}
+            <br />
+            <img src={item.image} width="100px" />
+            <br />
+            Name: {item.title}
+            <br />
+            Description: {item.description}
+            <br />
+            Neighbourhood: {item.district}
+            <br />
+            Address: {item.address}
+            <br />
+            Rating: {item.ratings}
+            <br />
+            Opening Hours: {item.opening_hours}
+            <br />
+            Cost: {item.cost}
+            <br />
             <Button>Update</Button>
-            <Button>Delete</Button>
+            <Button onClick={deleteActivity}>Delete</Button>
             <hr></hr>
           </List>
         ))}

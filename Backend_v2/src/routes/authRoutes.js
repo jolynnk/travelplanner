@@ -18,13 +18,13 @@ router.post("/register", async (req, res) => {
       'INSERT INTO users ("user", password, role) VALUES ($1, $2, $3)';
     await pool.query(query, [user, hashedPassword, ["user"]]); //add ", 'admin'" behind user to register as admin
 
-        // Retrieve the user from the database again (including the role)
-        const userQuery = 'SELECT * FROM users WHERE "user" = $1';
-        const userResult = await pool.query(userQuery, [user]);
-        const userRecord = userResult.rows[0];
-    
-        // Log the userRecord object
-        console.log("userRecord:", userRecord);
+    // Retrieve the user from the database again (including the role)
+    const userQuery = 'SELECT * FROM users WHERE "user" = $1';
+    const userResult = await pool.query(userQuery, [user]);
+    const userRecord = userResult.rows[0];
+
+    // Log the userRecord object
+    console.log("userRecord:", userRecord);
 
     res.json({ message: "User registered successfully" });
   } catch (error) {
@@ -60,6 +60,7 @@ router.post("/login", async (req, res) => {
       user: userRecord.user,
       role: userRecord.role, // Include the user's role here
     };
+    console.log(tokenPayload)
 
     // Generate and send a JWT token for authentication
     const token = jwt.sign(tokenPayload, process.env.SECRET_KEY, {
