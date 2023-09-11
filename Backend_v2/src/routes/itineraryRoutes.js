@@ -4,7 +4,7 @@ const pool = require("../config/db");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middleware/auth");
 
-// Route for creating an empty itinerary (USER)
+//create empty itinerary (USER)
 router.post("/itinerary", async (req, res) => {
   const { location, num_of_days, title } = req.body;
 
@@ -100,13 +100,63 @@ router.patch("/itinerary/update", authMiddleware, async (req, res) => {
   }
 });
 
-//retrieve user's itinerary
-router.get("/itinerary/:id", async (req, res) => {
-  const id = req.params.id;
+//remove activities from user's itinerary (USER)
+// router.delete(
+//   "/itinerary/delete-activity/:id",
+//   authMiddleware,
+//   async (req, res) => {
+//     const { id } = req.params;
 
+//     try {
+//       // Step 1: Delete the itineraryactivity record for the specific itinerary and activity
+//       const deleteItineraryActivityQuery =
+//         "DELETE FROM itineraryactivity WHERE itinerary_id = $1 AND activity_id = $2 AND day = $3";
+//       const { rowCount } = await pool.query(deleteItineraryActivityQuery, [
+//         // itineraryId,
+//         activityId,
+//         day,
+//       ]);
+
+//       // Step 2: Check if any records were deleted
+//       if (rowCount === 0) {
+//         return res.status(404).json({ error: "Itinerary activity not found" });
+//       }
+
+//       res.json({ message: "Itinerary activity deleted successfully" });
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).json({ error: "Server Error" });
+//     }
+//   }
+// );
+
+//retrieve user's itineraries (USER)
+router.get("/itineraries/user", authMiddleware, async (req, res) => {
   try {
-    const query = "SELECT * FROM itinerary WHERE id = $1";
-    const values = [id];
+    const userId = req.user.id; //extracts user info from the token
+
+    // Fetch all itineraries for the authenticated user
+    const query = `
+      SELECT
+        i.itinerary_id,
+        i.title AS itinerary_title,
+        i.location AS itinerary_location,
+        i.num_of_days,
+        ia.activity_id,
+        ia.day,
+        a.activity_type_name,
+        a.title AS activity_title,
+        a.district AS activity_district
+      FROM
+        itinerary i
+      LEFT JOIN
+        itineraryactivity ia ON i.itinerary_id = ia.itinerary_id
+      LEFT JOIN
+        activity a ON ia.activity_id = a.activity_id
+      WHERE
+        i.id = $1;
+    `;
+    const values = [userId];
 
     const result = await pool.query(query, values);
 
@@ -116,6 +166,41 @@ router.get("/itinerary/:id", async (req, res) => {
     res
       .status(500)
       .json({ error: "An error occurred while fetching user itineraries." });
+  }
+});
+
+//delete user's itinerary (USER)
+router.delete("/itinerary/delete/:id", authMiddleware, async (req, res) => {
+  const userId = req.user.id; // Extract user ID from the token
+  const itineraryId = req.params.id; // Extract itinerary ID from the URL parameter
+
+  try {
+    // Check if the itinerary belongs to the authenticated user
+    const itinerary = await pool.query(
+      "SELECT * FROM itinerary WHERE id = $1 AND itinerary_id = $2",
+      [userId, itineraryId]
+    );
+
+    if (itinerary.rows.length === 0) {
+      return res.status(404).json({ message: "Itinerary not found" });
+    }
+
+    // Delete related records in the itineraryactivity table first
+    await pool.query("DELETE FROM itineraryactivity WHERE itinerary_id = $1", [
+      itineraryId,
+    ]);
+
+    // If the itinerary belongs to the user, delete it
+    await pool.query("DELETE FROM itinerary WHERE itinerary_id = $1", [
+      itineraryId,
+    ]);
+
+    res.status(200).json({ message: "Itinerary deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting itinerary:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while deleting the itinerary" });
   }
 });
 

@@ -98,72 +98,75 @@ const Itinerary = () => {
           className="itinerary-container"
           style={{ maxWidth: "500px", margin: "0 auto" }}
         >
-          <Typography
-            variant="h5"
-            style={{
-              fontSize: "28px",
-              marginBottom: "20px",
-              color: "#4f6369",
-              fontWeight: "bold",
-            }}
-          >
-            Create a new itinerary
-          </Typography>
-          <form>
-            <label>
-              Location:
-              <select
-                ref={locationRef}
-                name="location"
-                style={{
-                  width: "70%",
-                  padding: "5px",
-                  borderRadius: "5px",
-                  margin: "10px",
-                }}
-              >
-                <option value="London">London</option>
-                <option value="Tokyo">Tokyo (coming soon)</option>
-                <option value="New York">New York (coming soon)</option>
-                <option value="Paris">Paris (coming soon)</option>
-                <option value="Singapore">Singapore (coming soon)</option>
-              </select>
-            </label>
-            <br />
-            <label style={{ display: "block", marginBottom: "10px" }}>
-              Number of days:
-              <select
-                name="numberOfDays"
-                onChange={handleNumOfDaysChange}
-                style={{
-                  width: "35%",
-                  padding: "5px",
-                  borderRadius: "5px",
-                  margin: "10px",
-                }}
-              >
-                <option value="3">3</option>
-                <option value="5">5</option>
-                <option value="7">7</option>
-              </select>
-            </label>
-            <label>
-              Title:
-              <input
-                // value={itineraryTitle}
-                // onChange={(e) => setItineraryTitle(e.target.value)} // Update the itineraryTitle state
-                ref={titleRef}
-                name="title"
-                style={{
-                  width: "75%",
-                  padding: "5px",
-                  borderRadius: "5px",
-                  margin: "8px",
-                  border: "1px solid #ccc",
-                }}
-              />
-            </label>
-            <br />
+          <div className={isButtonClicked ? "" : "form-container"}>
+            <Typography
+              variant="h5"
+              style={{
+                fontSize: "28px",
+                marginBottom: "20px",
+                color: "#4f6369",
+                fontWeight: "bold",
+              }}
+            >
+              Create a new itinerary
+            </Typography>
+            <form>
+              <label>
+                Location:
+                <select
+                  ref={locationRef}
+                  name="location"
+                  style={{
+                    width: "70%",
+                    padding: "5px",
+                    borderRadius: "5px",
+                    margin: "10px",
+                  }}
+                  disabled={isButtonClicked} //disable field when "create" button clicked
+                >
+                  <option value="London">London</option>
+                  <option value="Tokyo">Tokyo (coming soon)</option>
+                  <option value="New York">New York (coming soon)</option>
+                  <option value="Paris">Paris (coming soon)</option>
+                  <option value="Singapore">Singapore (coming soon)</option>
+                </select>
+              </label>
+              <br />
+              <label style={{ display: "block", marginBottom: "10px" }}>
+                Number of days:
+                <select
+                  name="numberOfDays"
+                  onChange={handleNumOfDaysChange}
+                  style={{
+                    width: "35%",
+                    padding: "5px",
+                    borderRadius: "5px",
+                    margin: "10px",
+                  }}
+                  disabled={isButtonClicked} //disable field when "create" button clicked
+                >
+                  <option value="3">3</option>
+                  <option value="5">5</option>
+                  <option value="7">7</option>
+                </select>
+              </label>
+              <label>
+                Title:
+                <input
+                  ref={titleRef}
+                  name="title"
+                  style={{
+                    width: "75%",
+                    padding: "5px",
+                    borderRadius: "5px",
+                    margin: "8px",
+                    border: "1px solid #ccc",
+                  }}
+                  disabled={isButtonClicked} //disable field when "create" button clicked
+                />
+              </label>
+              <br />
+            </form>
             <Button
               variant="contained"
               color="primary"
@@ -176,11 +179,11 @@ const Itinerary = () => {
                 createItinerary();
                 setIsButtonClicked(true); // Set the button click state
               }}
+              disabled={isButtonClicked} //disable button when "create" clicked for first time
             >
               Create
             </Button>
-          </form>
-
+          </div>
           {/* Display Activities only when button is clicked */}
           {isButtonClicked && (
             <div>

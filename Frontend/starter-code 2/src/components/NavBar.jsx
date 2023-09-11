@@ -13,7 +13,10 @@ const NavBar = () => {
             <NavLink to="/">Create Itinerary</NavLink>
           </li>
           <li>
-            <NavLink to="/smart-itinerary">Smart Itinerary</NavLink>
+            <NavLink to="/user-itineraries">Current Itineraries</NavLink>
+          </li>
+          <li>
+            <NavLink to="/smart-itinerary">Smartinerary [Beta]</NavLink>
           </li>
           <li>
             <NavLink to="/login">Log in</NavLink>

@@ -35,6 +35,18 @@ router.get("/activities/:id", async (req, res) => {
   }
 });
 
+// Get a list of all activity types for update modal dropdown (ADMIN)
+router.get("/activity-type", async (req, res) => {
+  try {
+    const query = "SELECT * FROM ActivityType";
+    const activities = await pool.query(query);
+    res.json(activities.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
 // Create a new activity (ADMIN)
 router.post("/activities", async (req, res) => {
   const {
