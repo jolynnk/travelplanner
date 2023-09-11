@@ -101,34 +101,32 @@ router.patch("/itinerary/update", authMiddleware, async (req, res) => {
 });
 
 //remove activities from user's itinerary (USER)
-// router.delete(
-//   "/itinerary/delete-activity/:id",
-//   authMiddleware,
-//   async (req, res) => {
-//     const { id } = req.params;
+// Backend route to delete an activity from an itinerary
+router.delete("/itinerary/delete-activity/:itineraryId/:activityId", authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { itineraryId, activityId } = req.params;
 
-//     try {
-//       // Step 1: Delete the itineraryactivity record for the specific itinerary and activity
-//       const deleteItineraryActivityQuery =
-//         "DELETE FROM itineraryactivity WHERE itinerary_id = $1 AND activity_id = $2 AND day = $3";
-//       const { rowCount } = await pool.query(deleteItineraryActivityQuery, [
-//         // itineraryId,
-//         activityId,
-//         day,
-//       ]);
+    // Check if the activity belongs to the specified itinerary and the user has permissions
 
-//       // Step 2: Check if any records were deleted
-//       if (rowCount === 0) {
-//         return res.status(404).json({ error: "Itinerary activity not found" });
-//       }
+    // Execute a SQL DELETE statement on the itineraryactivity table
+    const deleteActivityQuery = `
+      DELETE FROM itineraryactivity
+      WHERE itinerary_id = $1 AND activity_id = $2;
+    `;
 
-//       res.json({ message: "Itinerary activity deleted successfully" });
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ error: "Server Error" });
-//     }
-//   }
-// );
+    const result = await pool.query(deleteActivityQuery, [itineraryId, activityId]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "Activity not found in itinerary" });
+    }
+
+    res.status(200).json({ message: "Activity deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "An error occurred while deleting the activity" });
+  }
+});
 
 //retrieve user's itineraries (USER)
 router.get("/itineraries/user", authMiddleware, async (req, res) => {
@@ -146,7 +144,10 @@ router.get("/itineraries/user", authMiddleware, async (req, res) => {
         ia.day,
         a.activity_type_name,
         a.title AS activity_title,
-        a.district AS activity_district
+        a.district AS activity_district,
+        a.cost,
+        a.opening_hours,
+        a.image
       FROM
         itinerary i
       LEFT JOIN

@@ -11,6 +11,8 @@ const Itinerary = () => {
   const [itinerary_id, setitinerary_id] = useState(null);
   const [activity, setActivity] = useState([]);
   const [activitiesByDay, setActivitiesByDay] = useState({});
+  const [userItineraries, setUserItineraries] = useState([]);
+  const [refreshKey, setRefreshKey] = useState(0); // Add a key for refresh
 
   //create blank itinerary
   const createItinerary = async () => {
@@ -90,6 +92,79 @@ const Itinerary = () => {
   useEffect(() => {
     getActivities();
   }, []);
+
+  //get user itineraries to refresh activities after deleting from new itinerary
+  const getItineraries = async () => {
+    try {
+      const authToken = localStorage.getItem("jwtToken"); //retrieve the authentication token from storage after user logs in
+
+      if (!authToken) {
+        // Check if the token is available
+        alert("Authentication token is missing");
+        return;
+      }
+
+      const res = await fetch(
+        import.meta.env.VITE_SERVER + "/api/itineraries/user",
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`, // Include the token in the headers to authenticate user's request on the server
+          },
+        }
+      );
+      console.log("Response:", res); // Log the response object
+      const data = await res.json();
+      console.log("Data:", data); // Log the data received from the server
+      setUserItineraries(data);
+
+      if (!res.ok) {
+        alert("error fetching data");
+      }
+    } catch (error) {
+      console.log(error.message);
+      alert("an error has occurred");
+    }
+  };
+
+  //function to delete activity from itinerary (USER)
+  const handleDeleteActivity = async (itineraryId, activityId) => {
+    try {
+      const authToken = localStorage.getItem("jwtToken");
+      if (!authToken) {
+        alert("Authentication token is missing");
+        return;
+      }
+
+      const apiUrl = `${
+        import.meta.env.VITE_SERVER
+      }/api/itinerary/delete-activity/${itineraryId}/${activityId}`;
+
+      console.log("API Endpoint:", apiUrl); // Log the API endpoint
+
+      const res = await fetch(
+        `${
+          import.meta.env.VITE_SERVER
+        }/api/itinerary/delete-activity/${itineraryId}/${activityId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        alert("Activity deleted successfully");
+        // Remove the deleted activity from the state
+        getItineraries();
+      } else {
+        alert("Error deleting activity");
+      }
+    } catch (error) {
+      console.error(error.message);
+      alert("An error has occurred");
+    }
+  };
 
   return (
     <>
@@ -219,11 +294,22 @@ const Itinerary = () => {
                         <p>District: {activity.district}</p>
                         <p>Opening Hours: {activity.opening_hours}</p>
                         <p>Cost: {activity.cost}</p>
+                        <p>Id: {activity.activity_id}</p>
                         <img
                           src={activity.image}
                           alt={activity.title}
                           width="150px"
                         />
+                        <Button
+                          onClick={() =>
+                            handleDeleteActivity(
+                              itinerary_id,
+                              activity.activity_id
+                            )
+                          }
+                        >
+                          Remove Activity
+                        </Button>
                         <hr></hr>
                       </div>
                     )

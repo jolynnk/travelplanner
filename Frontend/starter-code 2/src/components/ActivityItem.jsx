@@ -60,6 +60,7 @@ const ActivityItem = (props) => {
           opening_hours: props.opening_hours,
           cost: props.cost,
           image: props.image,
+          activity_id: props.activity_id
         });
 
         //update state and display via Itinerary.jsx
@@ -100,6 +101,7 @@ const ActivityItem = (props) => {
             <Typography variant="h5">{props.title}</Typography>
             <Typography variant="body1">{props.activity_type_name}</Typography>
             <Typography variant="body1">Price: {props.cost}</Typography>
+            <Typography variant="body1">Id: {props.activity_id}</Typography>
             <Typography variant="body1">
               Neighbourhood: {props.district}
             </Typography>
