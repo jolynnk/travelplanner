@@ -103,12 +103,16 @@ const AdminUpdateModal = (props) => {
     <>
       <div className={styles.backdrop}>
         <div className={styles.modal}>
-          <form>
-            <label>Activity Type</label>
+          <form style={{ padding: "30px 0px 0px 40px" }}>
+            <h4>Update Activity Form</h4>
+            <label style={{ padding: "15px 90px 0px 0px" }}>
+              Activity Type
+            </label>
             <Select
               className={styles.activityTypeDropdown} // Add a custom class name
               value={selectedActivityType} // Set the value to the selectedActivityType state
               onChange={(e) => setSelectedActivityType(e.target.value)} // Update the selectedActivityType state on change
+              style={{ height: "35px", width: "188px" }}
             >
               {activityTypes.map((type) => (
                 <MenuItem key={type.id} value={type.activity_type_name}>
@@ -117,37 +121,41 @@ const AdminUpdateModal = (props) => {
               ))}
             </Select>
             <br />
-            <input type="text" placeholder="name" ref={titleRef}></input>
+            <label style={{ padding: "15px 141px 0px 0px" }}>Name</label>
+            <input type="text" ref={titleRef}></input>
             <br />
-            <input
-              type="text"
-              placeholder="description"
-              ref={descriptionRef}
-            ></input>
+            <label style={{ padding: "15px 100px 0px 0px" }}>Description</label>
+            <input type="text" ref={descriptionRef}></input>
             <br />
-            <input
-              type="text"
-              placeholder="neighbourhood"
-              ref={districtRef}
-            ></input>
+            <label style={{ padding: "15px 70px 0px 0px" }}>
+              Neighbourhood
+            </label>
+            <input type="text" ref={districtRef}></input>
             <br />
-            <input type="text" placeholder="address" ref={addressRef}></input>
+            <label style={{ padding: "15px 123px 0px 0px" }}>Address</label>
+            <input type="text" ref={addressRef}></input>
             <br />
-            <input type="text" placeholder="rating" ref={ratingsRef}></input>
+            <label style={{ padding: "15px 136px 0px 0px" }}>Rating</label>
+            <input type="text" ref={ratingsRef}></input>
             <br />
-            <input
-              type="text"
-              placeholder="opening hours"
-              ref={opening_hoursRef}
-            ></input>
+            <label style={{ padding: "15px 73px 0px 0px" }}>
+              Opening Hours
+            </label>
+            <input type="text" ref={opening_hoursRef}></input>
             <br />
-            <input type="text" placeholder="cost" ref={costRef}></input>
+            <label style={{ padding: "15px 148px 0px 0px" }}>Cost</label>
+            <input type="text" ref={costRef}></input>
             <br />
-            <input type="text" placeholder="image" ref={imageRef}></input>
+            <label style={{ padding: "15px 136px 0px 0px" }}>Image</label>
+
+            <input type="text" ref={imageRef}></input>
+            <br/>
+            <div style={{margin: "18px 10px 10px -15px"}}>
             <Button onClick={() => updateActivity(props.selectedActivity)}>
               Save
             </Button>
             <Button onClick={() => props.setShowModal(false)}>Close</Button>
+            </div>
           </form>
         </div>
       </div>

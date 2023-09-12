@@ -146,7 +146,7 @@ const AdminDashboard = () => {
           <Select
             value={activityTypeName}
             onChange={(e) => setActivityTypeName(e.target.value)}
-            style={{ width: "150px", height: "35px" }}
+            style={{ width: "188px", height: "35px" }}
           >
             <MenuItem value="Hotels">Hotels</MenuItem>
             <MenuItem value="Food & Drinks">Food & Drinks</MenuItem>

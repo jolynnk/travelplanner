@@ -36,7 +36,7 @@ const NavBar = () => {
             <li className={styles.login}>
               <NavLink to="/login">Log in</NavLink>
             </li>
-            <li className={styles.signup}>
+            <li>
               <NavLink to="/registration">Sign up</NavLink>
             </li>
           </ul>
