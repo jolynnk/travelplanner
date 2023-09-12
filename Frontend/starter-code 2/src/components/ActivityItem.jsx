@@ -65,9 +65,7 @@ const ActivityItem = (props) => {
 
         //update state and display via Itinerary.jsx
         props.setActivitiesByDay(updatedActivities);
-
-        alert("Activity added to itinerary successfully");
-
+        
         // Reset the selected day to Day 1
         setSelectedDay(1);
       }
@@ -96,12 +94,11 @@ const ActivityItem = (props) => {
         }}
       >
         <CardActionArea>
-          <CardMedia component="img" height="360" src={props.image} />
+          <CardMedia component="img" height="330" src={props.image} />
           <CardContent>
             <Typography variant="h5">{props.title}</Typography>
             <Typography variant="body1">{props.activity_type_name}</Typography>
             <Typography variant="body1">Price: {props.cost}</Typography>
-            <Typography variant="body1">Id: {props.activity_id}</Typography>
             <Typography variant="body1">
               Neighbourhood: {props.district}
             </Typography>
@@ -114,14 +111,16 @@ const ActivityItem = (props) => {
                 backgroundColor: "white",
                 borderColor: "black",
                 justifyItems: "center",
-                margin: "10px 5px",
+                margin: "20px 5px",
               }}
             >
               details
             </Button>
+            
             {/* iterates through dayOptions array. for each option, MenuItem created showing the day no. */}
             <FormControl>
-              <Select value={selectedDay} onChange={handleDayChange}>
+              <Select value={selectedDay} onChange={handleDayChange} sx={{ height: "36px", width: "87px", marginTop: "20px", marginLeft: "51px"}} // Apply custom height here
+>
                 {dayOptions.map((option) => (
                   <MenuItem key={option.day} value={option.day}>
                     Day {option.day}

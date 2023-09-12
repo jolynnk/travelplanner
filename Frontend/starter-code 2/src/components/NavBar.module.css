@@ -3,6 +3,10 @@
   font-size: 22px;
   font-family: Roboto;
   background: #8da387;
+  display: flex;
+  justify-content: space-between; /* Align items to the ends */
+  align-items: center; /* Vertically center children */
+  padding: 0 2rem; /* Add padding to space out the content */
 }
 
 .navbar nav {
@@ -22,7 +26,6 @@
 
 .navbar li {
   margin: 0 1rem;
-  width: 12rem;
 }
 
 .navbar a {
@@ -36,4 +39,26 @@
   color: whitesmoke;
   padding-bottom: 0.25rem;
   border-bottom: 4px solid whitesmoke;
+}
+
+.navbarContent {
+  display: flex;
+  justify-content: space-between; /* Spacing between app name and links */
+  align-items: center; /* Vertically center children */
+}
+
+.appName {
+  padding: 20px 50px 8px 10px;
+  font-family: 'PT Serif', serif;
+  color: white;
+  font-size: 35px;
+}
+
+.navbarLinks {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 40px;
+  margin: 120px;
+  font-size: 20px;
 }

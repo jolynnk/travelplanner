@@ -176,6 +176,16 @@ const Itinerary = () => {
             <Typography
               variant="h5"
               style={{
+                fontSize: "20px",
+                color: "#4f6369",
+                fontWeight: "bold",
+              }}
+            >
+              Step 1{" "}
+            </Typography>
+            <Typography
+              variant="h5"
+              style={{
                 fontSize: "28px",
                 marginBottom: "20px",
                 color: "#4f6369",
@@ -199,10 +209,18 @@ const Itinerary = () => {
                   disabled={isButtonClicked} //disable field when "create" button clicked
                 >
                   <option value="London">London</option>
-                  <option value="Tokyo" disabled>Tokyo (coming soon)</option>
-                  <option value="New York" disabled>New York (coming soon)</option>
-                  <option value="Paris" disabled>Paris (coming soon)</option>
-                  <option value="Singapore" disabled>Singapore (coming soon)</option>
+                  <option value="Tokyo" disabled>
+                    Tokyo (coming soon)
+                  </option>
+                  <option value="New York" disabled>
+                    New York (coming soon)
+                  </option>
+                  <option value="Paris" disabled>
+                    Paris (coming soon)
+                  </option>
+                  <option value="Singapore" disabled>
+                    Singapore (coming soon)
+                  </option>
                 </select>
               </label>
               <br />
@@ -240,12 +258,13 @@ const Itinerary = () => {
                 />
               </label>
               <br />
+              <br />
             </form>
             <Button
               variant="contained"
               color="primary"
               style={{
-                width: "63%",
+                width: "20%",
                 backgroundColor: "#4f6369", // Change this color to your desired color
                 color: "white", // Text color
               }}
@@ -258,6 +277,8 @@ const Itinerary = () => {
               Create
             </Button>
           </div>
+          <br />
+          <hr></hr>
           {/* Display Activities only when button is clicked */}
           {isButtonClicked && (
             <div>
@@ -293,12 +314,12 @@ const Itinerary = () => {
                         <p>District: {activity.district}</p>
                         <p>Opening Hours: {activity.opening_hours}</p>
                         <p>Cost: {activity.cost}</p>
-                        <p>Id: {activity.activity_id}</p>
                         <img
                           src={activity.image}
                           alt={activity.title}
                           width="150px"
                         />
+                        <div>
                         <Button
                           onClick={() =>
                             handleDeleteActivity(
@@ -309,6 +330,7 @@ const Itinerary = () => {
                         >
                           Remove Activity
                         </Button>
+                        </div>
                         <hr></hr>
                       </div>
                     )
@@ -318,8 +340,28 @@ const Itinerary = () => {
             </div>
           )}
         </div>
-
         <div className="activity-container">
+          <Typography
+            variant="h5"
+            style={{
+              fontSize: "20px",
+              color: "#4f6369",
+              fontWeight: "bold",
+            }}
+          >
+            Step 2
+          </Typography>
+          <Typography
+            variant="h5"
+            style={{
+              fontSize: "28px",
+              marginBottom: "20px",
+              color: "#4f6369",
+              fontWeight: "bold",
+            }}
+          >
+            Add activities
+          </Typography>
           <Grid
             container
             spacing={3}

@@ -7,36 +7,41 @@ const NavBar = () => {
 
   return (
     <header className={styles.navbar}>
-      <nav>
-        <ul>
-          {userRole.includes("user" || "admin") && (
+      <div className={styles.navbarContent}>
+        <div className={styles.appName}>
+          <p>itinero</p>
+        </div>
+        <nav>
+          <ul className={styles.navbarLinks}>
+            {userRole.includes("user" || "admin") && (
+              <li>
+                <NavLink to="/">Create Itinerary</NavLink>
+              </li>
+            )}
+            {userRole.includes("user" || "admin") && (
+              <li>
+                <NavLink to="/user-itineraries">Current Itineraries</NavLink>
+              </li>
+            )}
+            {userRole.includes("user" || "admin") && (
+              <li>
+                <NavLink to="/smart-itinerary">Smartinerary™</NavLink>
+              </li>
+            )}
             <li>
-              <NavLink to="/">Create Itinerary</NavLink>
+              <NavLink to="/login">Log in</NavLink>
             </li>
-          )}
-          {userRole.includes("user" || "admin") && (
             <li>
-              <NavLink to="/user-itineraries">Current Itineraries</NavLink>
+              <NavLink to="/registration">Sign up</NavLink>
             </li>
-          )}
-          {userRole.includes("user" || "admin") && (
-            <li>
-              <NavLink to="/smart-itinerary">Smartinerary™</NavLink>
-            </li>
-          )}
-          <li>
-            <NavLink to="/login">Log in</NavLink>
-          </li>
-          <li>
-            <NavLink to="/registration">Sign up</NavLink>
-          </li>
-          {userRole.includes("admin") && ( // Conditionally render Admin Dashboard link
-            <li>
-              <NavLink to="/admin-dashboard">Admin Dashboard</NavLink>
-            </li>
-          )}
-        </ul>
-      </nav>
+            {userRole.includes("admin") && ( // Conditionally render Admin Dashboard link
+              <li>
+                <NavLink to="/admin-dashboard">Admin Dashboard</NavLink>
+              </li>
+            )}
+          </ul>
+        </nav>
+      </div>
     </header>
   );
 };

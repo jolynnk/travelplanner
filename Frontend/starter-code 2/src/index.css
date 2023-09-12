@@ -41,7 +41,7 @@ body {
 /* Container for the activity cards on the right */
 .activity-container {
   flex: 1;
-  padding: 50px; /* Add padding to the activity container */
+  padding: 17px 50px 0px 55px; /* Add padding to the activity container */
   overflow-y: auto; /* Enable vertical scrolling for activities */
   max-height: 1200px; /* Set a maximum height for the activity container */
   background: white;
