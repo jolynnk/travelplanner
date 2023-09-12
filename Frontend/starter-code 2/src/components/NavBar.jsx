@@ -28,17 +28,17 @@ const NavBar = () => {
                 <NavLink to="/smart-itinerary">Smartinerary™</NavLink>
               </li>
             )}
-            <li>
-              <NavLink to="/login">Log in</NavLink>
-            </li>
-            <li>
-              <NavLink to="/registration">Sign up</NavLink>
-            </li>
             {userRole.includes("admin") && ( // Conditionally render Admin Dashboard link
               <li>
                 <NavLink to="/admin-dashboard">Admin Dashboard</NavLink>
               </li>
             )}
+            <li className={styles.login}>
+              <NavLink to="/login">Log in</NavLink>
+            </li>
+            <li className={styles.signup}>
+              <NavLink to="/registration">Sign up</NavLink>
+            </li>
           </ul>
         </nav>
       </div>

@@ -37,7 +37,7 @@ const DetailsModal = (props) => {
         >
           X
         </Button>
-        <DialogTitle sx={{ textAlign: "center", marginTop: "20px" }}>
+        <DialogTitle sx={{ textAlign: "center", marginTop: "20px", color: "#4f6369" }}>
           <h3>{props.title}</h3>
         </DialogTitle>
 
@@ -53,6 +53,7 @@ const DetailsModal = (props) => {
               justifyItems: "center",
               textAlign: "center",
               fontSize: "18px",
+              color: "#4f6369",
             }}
           >
             <br></br>

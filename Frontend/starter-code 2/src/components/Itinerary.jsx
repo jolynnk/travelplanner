@@ -77,7 +77,7 @@ const Itinerary = () => {
         <div key={day}>
           <Typography
             variant="h5"
-            style={{ fontSize: "20px", marginBottom: "20px" }}
+            style={{ fontSize: "20px", marginBottom: "20px", color: "#4f6369", fontWeight: "bold" }}
           >
             Day {day}
           </Typography>
@@ -195,7 +195,11 @@ const Itinerary = () => {
               Create a new itinerary
             </Typography>
             <form>
-              <label>
+              <label
+                style={{
+                  color: "#4f6369",
+                }}
+              >
                 Location:
                 <select
                   ref={locationRef}
@@ -224,7 +228,13 @@ const Itinerary = () => {
                 </select>
               </label>
               <br />
-              <label style={{ display: "block", marginBottom: "10px" }}>
+              <label
+                style={{
+                  display: "block",
+                  marginBottom: "10px",
+                  color: "#4f6369",
+                }}
+              >
                 Number of days:
                 <select
                   name="numberOfDays"
@@ -242,7 +252,11 @@ const Itinerary = () => {
                   <option value="7">7</option>
                 </select>
               </label>
-              <label>
+              <label
+                style={{
+                  color: "#4f6369",
+                }}
+              >
                 Title:
                 <input
                   ref={titleRef}
@@ -294,8 +308,20 @@ const Itinerary = () => {
               >
                 My trip
               </Typography>
-              <p>Location: {locationRef.current.value}</p>
-              <p>Title: {titleRef.current.value}</p>
+              <p
+                style={{
+                  color: "#4f6369",
+                }}
+              >
+                Location: {locationRef.current.value}
+              </p>
+              <p
+                style={{
+                  color: "#4f6369",
+                }}
+              >
+                Title: {titleRef.current.value}
+              </p>
               <br></br>
               {/* iterate thru array created by generateDayRows and creates div for each Day */}
               {generateDayRows().map((day, index) => (
@@ -308,11 +334,16 @@ const Itinerary = () => {
                   {activitiesByDay[index + 1]?.map(
                     (activity, activityIndex) => (
                       // div created for each activity
-                      <div key={activityIndex}>
+                      <div
+                        key={activityIndex}
+                        style={{
+                          color: "#4f6369",
+                        }}
+                      >
                         <h5>{activity.title}</h5>
-                        <p>Type: {activity.activity_type_name}</p>
-                        <p>District: {activity.district}</p>
-                        <p>Opening Hours: {activity.opening_hours}</p>
+                        <p>{activity.activity_type_name}</p>
+                        <p>Neighbourhood: {activity.district}</p>
+                        <p>Opening hours: {activity.opening_hours}</p>
                         <p>Cost: {activity.cost}</p>
                         <img
                           src={activity.image}
@@ -320,16 +351,16 @@ const Itinerary = () => {
                           width="150px"
                         />
                         <div>
-                        <Button
-                          onClick={() =>
-                            handleDeleteActivity(
-                              itinerary_id,
-                              activity.activity_id
-                            )
-                          }
-                        >
-                          Remove Activity
-                        </Button>
+                          <Button
+                            onClick={() =>
+                              handleDeleteActivity(
+                                itinerary_id,
+                                activity.activity_id
+                              )
+                            }
+                          >
+                            Remove Activity
+                          </Button>
                         </div>
                         <hr></hr>
                       </div>

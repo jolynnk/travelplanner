@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Button, Typography } from "@mui/material";
+import { Grid, Button, Typography, Card } from "@mui/material";
 
 //get all user itineraries
 const UserItineraries = () => {
@@ -92,20 +92,30 @@ const UserItineraries = () => {
   };
 
   return (
-    <div>
-      <h1>Your Itineraries</h1>
+    <div
+      style={{
+        color: "#4f6369",
+        margin: "30px",
+      }}
+    >
+      <h2>Your itineraries</h2>
+      <br/>
+      <Card style={{
+        color: "#4f6369",
+        padding: "35px",
+      }}>
       <ul>
         {Object.values(itinerariesWithActivities).map((itinerary) => (
           <div key={itinerary.itinerary_id}>
-            <h2>{itinerary.itinerary_title}</h2>
+            <h4>{itinerary.itinerary_title}</h4>
             <p>City: {itinerary.itinerary_location}</p>
-            <p>Number of days: {itinerary.num_of_days}</p>
+            <p>Trip days: {itinerary.num_of_days}</p>
             <ul>
               {itinerary.activities.map((activity) => (
                 <li key={activity.activity_id}>
-                  <h5>
+                  <h6>
                     [Day {activity.day}] {activity.activity_title}
-                  </h5>
+                  </h6>
                   <p>Type: {activity.activity_type_name}</p>
                 </li>
               ))}
@@ -118,6 +128,7 @@ const UserItineraries = () => {
           </div>
         ))}
       </ul>
+      </Card>
     </div>
   );
 };
