@@ -9,15 +9,21 @@ const NavBar = () => {
     <header className={styles.navbar}>
       <nav>
         <ul>
-          <li>
-            <NavLink to="/">Create Itinerary</NavLink>
-          </li>
-          <li>
-            <NavLink to="/user-itineraries">Current Itineraries</NavLink>
-          </li>
-          <li>
-            <NavLink to="/smart-itinerary">Smartinerary [Beta]</NavLink>
-          </li>
+          {userRole.includes("user" || "admin") && (
+            <li>
+              <NavLink to="/">Create Itinerary</NavLink>
+            </li>
+          )}
+          {userRole.includes("user" || "admin") && (
+            <li>
+              <NavLink to="/user-itineraries">Current Itineraries</NavLink>
+            </li>
+          )}
+          {userRole.includes("user" || "admin") && (
+            <li>
+              <NavLink to="/smart-itinerary">Smartinerary™</NavLink>
+            </li>
+          )}
           <li>
             <NavLink to="/login">Log in</NavLink>
           </li>
