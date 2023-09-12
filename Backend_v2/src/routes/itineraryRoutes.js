@@ -102,31 +102,42 @@ router.patch("/itinerary/update", authMiddleware, async (req, res) => {
 
 //remove activities from user's itinerary (USER)
 // Backend route to delete an activity from an itinerary
-router.delete("/itinerary/delete-activity/:itineraryId/:activityId", authMiddleware, async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const { itineraryId, activityId } = req.params;
+router.delete(
+  "/itinerary/delete-activity/:itineraryId/:activityId",
+  authMiddleware,
+  async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const { itineraryId, activityId } = req.params;
 
-    // Check if the activity belongs to the specified itinerary and the user has permissions
+      // Check if the activity belongs to the specified itinerary and the user has permissions
 
-    // Execute a SQL DELETE statement on the itineraryactivity table
-    const deleteActivityQuery = `
+      // Execute a SQL DELETE statement on the itineraryactivity table
+      const deleteActivityQuery = `
       DELETE FROM itineraryactivity
       WHERE itinerary_id = $1 AND activity_id = $2;
     `;
 
-    const result = await pool.query(deleteActivityQuery, [itineraryId, activityId]);
+      const result = await pool.query(deleteActivityQuery, [
+        itineraryId,
+        activityId,
+      ]);
 
-    if (result.rowCount === 0) {
-      return res.status(404).json({ message: "Activity not found in itinerary" });
+      if (result.rowCount === 0) {
+        return res
+          .status(404)
+          .json({ message: "Activity not found in itinerary" });
+      }
+
+      res.status(200).json({ message: "Activity deleted successfully" });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ message: "An error occurred while deleting the activity" });
     }
-
-    res.status(200).json({ message: "Activity deleted successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "An error occurred while deleting the activity" });
   }
-});
+);
 
 //retrieve user's itineraries (USER)
 router.get("/itineraries/user", authMiddleware, async (req, res) => {

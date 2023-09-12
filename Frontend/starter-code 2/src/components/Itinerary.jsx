@@ -12,7 +12,6 @@ const Itinerary = () => {
   const [activity, setActivity] = useState([]);
   const [activitiesByDay, setActivitiesByDay] = useState({});
   const [userItineraries, setUserItineraries] = useState([]);
-  const [refreshKey, setRefreshKey] = useState(0); // Add a key for refresh
 
   //create blank itinerary
   const createItinerary = async () => {
@@ -200,10 +199,10 @@ const Itinerary = () => {
                   disabled={isButtonClicked} //disable field when "create" button clicked
                 >
                   <option value="London">London</option>
-                  <option value="Tokyo">Tokyo (coming soon)</option>
-                  <option value="New York">New York (coming soon)</option>
-                  <option value="Paris">Paris (coming soon)</option>
-                  <option value="Singapore">Singapore (coming soon)</option>
+                  <option value="Tokyo" disabled>Tokyo (coming soon)</option>
+                  <option value="New York" disabled>New York (coming soon)</option>
+                  <option value="Paris" disabled>Paris (coming soon)</option>
+                  <option value="Singapore" disabled>Singapore (coming soon)</option>
                 </select>
               </label>
               <br />

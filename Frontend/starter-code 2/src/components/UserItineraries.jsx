@@ -110,7 +110,11 @@ const UserItineraries = () => {
                 </li>
               ))}
             </ul>
-            <Button onClick={() => handleDeleteItinerary(itinerary.itinerary_id)}>Delete Itinerary</Button>
+            <Button
+              onClick={() => handleDeleteItinerary(itinerary.itinerary_id)}
+            >
+              Delete Itinerary
+            </Button>
           </div>
         ))}
       </ul>
