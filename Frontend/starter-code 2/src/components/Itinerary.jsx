@@ -12,6 +12,7 @@ const Itinerary = () => {
   const [activity, setActivity] = useState([]);
   const [activitiesByDay, setActivitiesByDay] = useState({});
   const [userItineraries, setUserItineraries] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState("All");
 
   //create blank itinerary
   const createItinerary = async () => {
@@ -77,7 +78,12 @@ const Itinerary = () => {
         <div key={day}>
           <Typography
             variant="h5"
-            style={{ fontSize: "20px", marginBottom: "20px", color: "#4f6369", fontWeight: "bold" }}
+            style={{
+              fontSize: "20px",
+              marginBottom: "20px",
+              color: "#4f6369",
+              fontWeight: "bold",
+            }}
           >
             Day {day}
           </Typography>
@@ -164,6 +170,18 @@ const Itinerary = () => {
       alert("An error has occurred");
     }
   };
+
+  const handleFilterSelect = (filter) => {
+    setSelectedFilter(filter);
+  };
+
+  const filteredActivities = activity.filter((item) => {
+    if (selectedFilter === "All") {
+      return true; // Show all activities when "All" is selected
+    } else {
+      return item.activity_type_name === selectedFilter;
+    }
+  });
 
   return (
     <>
@@ -393,14 +411,58 @@ const Itinerary = () => {
           >
             Add activities
           </Typography>
-          <Grid
+   
+            <div className="filter-buttons" style={{marginTop: "30px", marginBottom: "30px"}}>
+              <button
+                onClick={() => handleFilterSelect("All")}
+                className={`filter-button ${
+                  selectedFilter === "All" ? "active" : ""
+                }`}
+              >
+                All
+              </button>
+              <button
+                onClick={() => handleFilterSelect("Food & Drinks")}
+                className={`filter-button ${
+                  selectedFilter === "Food & Drinks" ? "active" : ""
+                }`}
+              >
+                Food & Drinks
+              </button>
+              <button
+                onClick={() => handleFilterSelect("Hotels")}
+                className={`filter-button ${
+                  selectedFilter === "Hotels" ? "active" : ""
+                }`}
+              >
+                Hotels
+              </button>
+              <button
+                onClick={() => handleFilterSelect("Things to do")}
+                className={`filter-button ${
+                  selectedFilter === "Things to do" ? "active" : ""
+                }`}
+              >
+                Things to Do
+              </button>
+              <button
+                onClick={() => handleFilterSelect("Things to see")}
+                className={`filter-button ${
+                  selectedFilter === "Things to see" ? "active" : ""
+                }`}
+              >
+                Things to See
+              </button>
+            </div>
+
+            <Grid
             container
             spacing={3}
             justifyContent="center"
             alignItems="center"
           >
             {/* prop down activities to ActivityItem.jsx for display */}
-            {activity.map((item) => (
+            {filteredActivities.map((item) => (
               <Grid
                 item
                 xs={12}
@@ -424,6 +486,7 @@ const Itinerary = () => {
                   itinerary_id={itinerary_id}
                   activitiesByDay={activitiesByDay}
                   setActivitiesByDay={setActivitiesByDay}
+                  activity={activity}
                 />
               </Grid>
             ))}

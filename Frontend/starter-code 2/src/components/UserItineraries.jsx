@@ -80,7 +80,6 @@ const UserItineraries = () => {
       );
 
       if (res.status === 200) {
-        alert("Itinerary deleted successfully");
         getItineraries();
       } else {
         alert("Error deleting itinerary");

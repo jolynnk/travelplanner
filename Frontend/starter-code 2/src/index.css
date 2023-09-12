@@ -59,4 +59,33 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
+/* Add this CSS to your component's stylesheet or a separate CSS file */
+
+/* Style the filter button container */
+.filter-buttons {
+  margin-bottom: 20px; /* Add spacing at the bottom */
+}
+
+/* Style the individual filter buttons */
+.filter-button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  background-color: #4f6369; /* Background color */
+  color: white; /* Text color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Style the active filter button differently */
+.filter-button.active {
+  background-color: #8da387; /* Change the color for the active button */
+}
+
+/* Add hover effect to the filter buttons */
+.filter-button:hover {
+  background-color: #333; /* Change the background color on hover */
+}
+
+
 

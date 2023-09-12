@@ -60,12 +60,12 @@ const ActivityItem = (props) => {
           opening_hours: props.opening_hours,
           cost: props.cost,
           image: props.image,
-          activity_id: props.activity_id
+          activity_id: props.activity_id,
         });
 
         //update state and display via Itinerary.jsx
         props.setActivitiesByDay(updatedActivities);
-        
+
         // Reset the selected day to Day 1
         setSelectedDay(1);
       }
@@ -116,11 +116,19 @@ const ActivityItem = (props) => {
             >
               details
             </Button>
-            
+
             {/* iterates through dayOptions array. for each option, MenuItem created showing the day no. */}
             <FormControl>
-              <Select value={selectedDay} onChange={handleDayChange} sx={{ height: "36px", width: "87px", marginTop: "20px", marginLeft: "51px"}} // Apply custom height here
->
+              <Select
+                value={selectedDay}
+                onChange={handleDayChange}
+                sx={{
+                  height: "36px",
+                  width: "87px",
+                  marginTop: "20px",
+                  marginLeft: "51px",
+                }} // Apply custom height here
+              >
                 {dayOptions.map((option) => (
                   <MenuItem key={option.day} value={option.day}>
                     Day {option.day}
@@ -145,6 +153,7 @@ const ActivityItem = (props) => {
           </CardContent>
         </CardActionArea>
       </Card>
+
       {showModal && (
         <DetailsModal
           activity_id={props.activity_id}
