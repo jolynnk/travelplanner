@@ -91,6 +91,17 @@ const AdminDashboard = () => {
         alert("Error creating activity");
       } else {
         alert("Activity created successfully");
+
+        setActivityTypeName("");
+        titleRef.current.value = "";
+        descriptionRef.current.value = "";
+        districtRef.current.value = "";
+        addressRef.current.value = "";
+        ratingsRef.current.value = "";
+        opening_hoursRef.current.value = "";
+        costRef.current.value = "";
+        imageRef.current.value = "";
+
         getActivities();
       }
     } catch (error) {
@@ -112,7 +123,6 @@ const AdminDashboard = () => {
       if (!res.ok) {
         alert("Error deleting activity");
       } else {
-        alert("Activity deleted successfully");
         // Refresh the activity list after deleting the activity
         getActivities();
       }
@@ -128,14 +138,15 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <Button onClick={toggleAddActivityForm}>
-        {showAddActivityForm ? "Cancel" : "Add Activity"}
-      </Button>
       {showAddActivityForm && (
-        <form>
+        <form style={{ padding: "20px 10px 0px 30px" }}>
+          <h4>Activity Creation Form</h4>
+          <br />
+          <label style={{ padding: "0px 43px 0px 0px" }}>Activity type</label>
           <Select
             value={activityTypeName}
             onChange={(e) => setActivityTypeName(e.target.value)}
+            style={{ width: "150px", height: "35px" }}
           >
             <MenuItem value="Hotels">Hotels</MenuItem>
             <MenuItem value="Food & Drinks">Food & Drinks</MenuItem>
@@ -143,41 +154,59 @@ const AdminDashboard = () => {
             <MenuItem value="Things to do">Things to do</MenuItem>
           </Select>
           <br />
-          <input type="text" placeholder="name" ref={titleRef}></input>
+          <label style={{ padding: "15px 90px 0px 0px" }}>Name</label>
+          <input type="text" ref={titleRef}></input>
           <br />
-          <input
-            type="text"
-            placeholder="description"
-            ref={descriptionRef}
-          ></input>
+          <label style={{ padding: "15px 50px 0px 0px" }}>Description</label>
+          <input type="text" ref={descriptionRef}></input>
           <br />
-          <input
-            type="text"
-            placeholder="neighbourhood"
-            ref={districtRef}
-          ></input>
+          <label style={{ padding: "15px 20px 0px 0px" }}>Neighbourhood</label>
+          <input type="text" ref={districtRef}></input>
           <br />
-          <input type="text" placeholder="address" ref={addressRef}></input>
+          <label style={{ padding: "15px 73px 0px 0px" }}>Address</label>
+          <input type="text" ref={addressRef}></input>
           <br />
-          <input type="text" placeholder="rating" ref={ratingsRef}></input>
+          <label style={{ padding: "15px 86px 0px 0px" }}>Rating</label>
+          <input type="text" ref={ratingsRef}></input>
           <br />
-          <input
-            type="text"
-            placeholder="opening hours"
-            ref={opening_hoursRef}
-          ></input>
+          <label style={{ padding: "15px 25px 0px 0px" }}>Opening hours</label>
+          <input type="text" ref={opening_hoursRef}></input>
           <br />
-          <input type="text" placeholder="cost" ref={costRef}></input>
+          <label style={{ padding: "15px 97px 0px 0px" }}>Cost</label>
+          <input type="text" ref={costRef}></input>
           <br />
-          <input type="text" placeholder="image" ref={imageRef}></input>
+          <label style={{ padding: "15px 87px 0px 0px" }}>Image</label>
+          <input type="text" ref={imageRef}></input>
+          <br />
+          <br />
           {userRole.includes("admin") && (
-            <Button onClick={(e) => createActivity(e)}>Submit</Button>
+            <Button
+              onClick={(e) => createActivity(e)}
+              style={{ margin: "0px 10px 0px -8px" }}
+            >
+              Submit
+            </Button>
           )}
         </form>
       )}
+      <Button
+        onClick={toggleAddActivityForm}
+        style={{ margin: "10px 10px 0px 20px" }}
+      >
+        {showAddActivityForm ? "Cancel" : "Add Activity"}
+      </Button>
       <br></br>
       <hr></hr>
-      <Grid container spacing={1} justifyContent="center" alignItems="center">
+      <div style={{ padding: "20px 10px 0px 30px" }}>
+        <h4>Existing Activities</h4>
+      </div>
+      <Grid
+        container
+        spacing={1}
+        justifyContent="center"
+        alignItems="center"
+        padding="20px 15px 0px 35px"
+      >
         {activity.map((item) => (
           <List item xs={10} sm={6} md={1} key={item.activity_id}>
             Activity ID: {item.activity_id} <br />
