@@ -48,9 +48,9 @@ const Registration = () => {
     >
       <Typography
         variant="h5"
-        style={{ fontSize: "24px", margin: "60px 0px 10px 0px" }}
+        style={{ fontSize: "24px", margin: "60px 0px 10px 0px", color: "#4f6369", fontWeight: "bold" }}
       >
-        Register for TravelPlanner
+        Register
       </Typography>
       {error && <Typography color="error">{error}</Typography>}
       <br></br>

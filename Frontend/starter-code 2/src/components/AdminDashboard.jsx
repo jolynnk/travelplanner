@@ -1,4 +1,4 @@
-import { Grid, Button, List } from "@mui/material";
+import { Grid, Button, List, Select, MenuItem } from "@mui/material";
 import React, { useState, useEffect, useRef } from "react";
 import AdminUpdateModal from "./AdminUpdateModal";
 
@@ -7,12 +7,7 @@ const AdminDashboard = () => {
   const [showAddActivityForm, setShowAddActivityForm] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState(null);
-  console.log(selectedActivity)
-
-//   const openUpdateModal = (activity) => {
-//     setSelectedActivity(activity);
-//     setShowModal(true);
-//   };
+  const [activityTypeName, setActivityTypeName] = useState("");
 
   //toggle visibility of add activity form
   const toggleAddActivityForm = () => {
@@ -80,7 +75,7 @@ const AdminDashboard = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          activity_type_name: activity_type_nameRef.current.value,
+          activity_type_name: activityTypeName,
           title: titleRef.current.value,
           description: descriptionRef.current.value,
           district: districtRef.current.value,
@@ -96,6 +91,7 @@ const AdminDashboard = () => {
         alert("Error creating activity");
       } else {
         alert("Activity created successfully");
+        getActivities();
       }
     } catch (error) {
       console.log(error.message);
@@ -137,11 +133,15 @@ const AdminDashboard = () => {
       </Button>
       {showAddActivityForm && (
         <form>
-          <input
-            type="text"
-            placeholder="activity type"
-            ref={activity_type_nameRef}
-          ></input>
+          <Select
+            value={activityTypeName}
+            onChange={(e) => setActivityTypeName(e.target.value)}
+          >
+            <MenuItem value="Hotels">Hotels</MenuItem>
+            <MenuItem value="Food & Drinks">Food & Drinks</MenuItem>
+            <MenuItem value="Things to see">Things to see</MenuItem>
+            <MenuItem value="Things to do">Things to do</MenuItem>
+          </Select>
           <br />
           <input type="text" placeholder="name" ref={titleRef}></input>
           <br />
@@ -199,7 +199,14 @@ const AdminDashboard = () => {
             <br />
             Cost: {item.cost}
             <br />
-            <Button onClick={() => { setShowModal(true); setSelectedActivity(item.activity_id); }}>Update</Button>
+            <Button
+              onClick={() => {
+                setShowModal(true);
+                setSelectedActivity(item.activity_id);
+              }}
+            >
+              Update
+            </Button>
             <Button onClick={() => deleteActivity(item.activity_id)}>
               Delete
             </Button>
@@ -210,16 +217,16 @@ const AdminDashboard = () => {
 
       {showModal && (
         <AdminUpdateModal
-        //   activity_type_nameRef={activity_type_nameRef}
-        //   titleRef={titleRef}
-        //   descriptionRef={descriptionRef}
-        //   districtRef={districtRef}
-        //   addressRef={addressRef}
-        //   ratingsRef={ratingsRef}
-        //   opening_hoursRef={opening_hoursRef}
-        //   costRef={costRef}
-        //   imageRef={imageRef}
-        //   updateActivity={updateActivity}
+          //   activity_type_nameRef={activity_type_nameRef}
+          //   titleRef={titleRef}
+          //   descriptionRef={descriptionRef}
+          //   districtRef={districtRef}
+          //   addressRef={addressRef}
+          //   ratingsRef={ratingsRef}
+          //   opening_hoursRef={opening_hoursRef}
+          //   costRef={costRef}
+          //   imageRef={imageRef}
+          //   updateActivity={updateActivity}
           showModal={showModal}
           setShowModal={setShowModal}
           selectedActivity={selectedActivity} // Pass the selected activity data
