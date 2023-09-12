@@ -4,8 +4,6 @@ import {
   DialogContent,
   Box,
   Button,
-  TextField,
-  Typography,
 } from "@mui/material";
 
 import React from "react";
@@ -32,7 +30,7 @@ const DetailsModal = (props) => {
             borderColor: "black",
             justifyItems: "center",
             margin: "10px auto",
-            zIndex: 1, // to ensure it appears above other content
+            zIndex: 1, //to ensure it appears above other content
           }}
         >
           X
@@ -80,9 +78,6 @@ const DetailsModal = (props) => {
             <p>
               <strong>Address:</strong> {props.address}
             </p>
-            {/* <Button onClick={() => props.setShowModal(false)}>
-              ADD TO TRIP
-            </Button> */}
           </Box>
         </DialogContent>
       </Dialog>

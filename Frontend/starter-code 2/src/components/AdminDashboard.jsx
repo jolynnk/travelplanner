@@ -46,23 +46,23 @@ const AdminDashboard = () => {
   };
 
   //get single activity (USER & ADMIN)
-  const getActivityById = async () => {
-    try {
-      const res = await fetch(
-        import.meta.env.VITE_SERVER + "/api/activities/:id"
-      );
+  // const getActivityById = async () => {
+  //   try {
+  //     const res = await fetch(
+  //       import.meta.env.VITE_SERVER + "/api/activities/:id"
+  //     );
 
-      if (!res.ok) {
-        alert("Error fetching activity");
-      } else {
-        const data = await res.json();
-        // Handle the retrieved activity data
-      }
-    } catch (error) {
-      console.log(error.message);
-      alert("An error has occurred");
-    }
-  };
+  //     if (!res.ok) {
+  //       alert("Error fetching activity");
+  //     } else {
+  //       const data = await res.json();
+  //       // Handle the retrieved activity data
+  //     }
+  //   } catch (error) {
+  //     console.log(error.message);
+  //     alert("An error has occurred");
+  //   }
+  // };
 
   //create activity (ADMIN)
   const createActivity = async (e) => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Button, Typography, Card } from "@mui/material";
 
-//get all user itineraries
+//get all user itineraries (USER)
 const UserItineraries = () => {
   const [userItineraries, setUserItineraries] = useState([]);
 
@@ -60,7 +60,7 @@ const UserItineraries = () => {
     });
   });
 
-  //function to delete itinerary (USER)
+  //delete itinerary (USER)
   const handleDeleteItinerary = async (itineraryId) => {
     try {
       const authToken = localStorage.getItem("jwtToken");
@@ -124,6 +124,7 @@ const UserItineraries = () => {
             >
               Delete Itinerary
             </Button>
+            <hr></hr>
           </div>
         ))}
       </ul>

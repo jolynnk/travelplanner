@@ -5,26 +5,24 @@ import ActivityItem from "./ActivityItem";
 const Itinerary = () => {
   const locationRef = useRef();
   const titleRef = useRef();
-  const [numOfDays, setNumOfDays] = useState(3); //3 days as default
-  // const [itineraryTitle, setItineraryTitle] = useState(""); // Added state for itinerary title
+  const [numOfDays, setNumOfDays] = useState(3); //store user input on no. of days for itinerary to be created
   const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const [itinerary_id, setitinerary_id] = useState(null);
+  const [itinerary_id, setitinerary_id] = useState(null); //store newly created itinerary id when itinerary created
   const [activity, setActivity] = useState([]);
-  const [activitiesByDay, setActivitiesByDay] = useState({});
-  const [userItineraries, setUserItineraries] = useState([]);
+  const [activitiesByDay, setActivitiesByDay] = useState({}); //to store the activities for each day when addToTrip function called
+  // const [userItineraries, setUserItineraries] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("All");
 
-  //create blank itinerary
+  //create blank itinerary (USER)
   const createItinerary = async () => {
     try {
-      // Retrieve the JWT token from localStorage
-      const authToken = localStorage.getItem("jwtToken");
+      const authToken = localStorage.getItem("jwtToken"); //retrieve JWT token from localStorage (generated when user logs in)
 
       const res = await fetch(import.meta.env.VITE_SERVER + "/api/itinerary", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
+          Authorization: `Bearer ${authToken}`, //tells server that request is authenticated with provided token, and to verify user's identity and grant access
         },
         body: JSON.stringify({
           location: locationRef.current.value,
@@ -37,7 +35,7 @@ const Itinerary = () => {
         alert("Error creating itinerary");
       } else {
         const data = await res.json();
-        setitinerary_id(data.itinerary_id); // Store the newly created itinerary_id
+        setitinerary_id(data.itinerary_id); //store the newly created itinerary_id
         alert("Itinerary created successfully");
       }
     } catch (error) {
@@ -63,6 +61,7 @@ const Itinerary = () => {
     }
   };
 
+  //chatGPT ref: how to create a blank itinerary to be populated with activities later on, based on the inputs in the itinerary form
   //parseInt - built-in function to convert string into integer
   //10 - parse event.target.value as a base-10 number (numbering system consisting of 10 digits)
   const handleNumOfDaysChange = (event) => {
@@ -70,6 +69,7 @@ const Itinerary = () => {
     setNumOfDays(selectedNumOfDays); //put parsed string into a state
   };
 
+  //creates the empty days as divs within the newly created itinerary
   const generateDayRows = () => {
     const rows = [];
     for (let day = 1; day <= numOfDays; day++) {
@@ -99,37 +99,37 @@ const Itinerary = () => {
   }, []);
 
   //get user itineraries to refresh activities after deleting from new itinerary
-  const getItineraries = async () => {
-    try {
-      const authToken = localStorage.getItem("jwtToken"); //retrieve the authentication token from storage after user logs in
+  // const getItineraries = async () => {
+  //   try {
+  //     const authToken = localStorage.getItem("jwtToken"); //retrieve the authentication token from storage after user logs in
 
-      if (!authToken) {
-        // Check if the token is available
-        alert("Authentication token is missing");
-        return;
-      }
+  //     if (!authToken) {
+  //       // Check if the token is available
+  //       alert("Authentication token is missing");
+  //       return;
+  //     }
 
-      const res = await fetch(
-        import.meta.env.VITE_SERVER + "/api/itineraries/user",
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`, // Include the token in the headers to authenticate user's request on the server
-          },
-        }
-      );
-      console.log("Response:", res); // Log the response object
-      const data = await res.json();
-      console.log("Data:", data); // Log the data received from the server
-      setUserItineraries(data);
+  //     const res = await fetch(
+  //       import.meta.env.VITE_SERVER + "/api/itineraries/user",
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${authToken}`, // Include the token in the headers to authenticate user's request on the server
+  //         },
+  //       }
+  //     );
+  //     console.log("Response:", res); // Log the response object
+  //     const data = await res.json();
+  //     console.log("Data:", data); // Log the data received from the server
+  //     setUserItineraries(data);
 
-      if (!res.ok) {
-        alert("error fetching data");
-      }
-    } catch (error) {
-      console.log(error.message);
-      alert("an error has occurred");
-    }
-  };
+  //     if (!res.ok) {
+  //       alert("error fetching data");
+  //     }
+  //   } catch (error) {
+  //     console.log(error.message);
+  //     alert("an error has occurred");
+  //   }
+  // };
 
   //function to delete activity from itinerary (USER)
   const handleDeleteActivity = async (itineraryId, activityId) => {
@@ -297,12 +297,12 @@ const Itinerary = () => {
               color="primary"
               style={{
                 width: "20%",
-                backgroundColor: "#4f6369", // Change this color to your desired color
-                color: "white", // Text color
+                backgroundColor: "#4f6369",
+                color: "white",
               }}
               onClick={() => {
                 createItinerary();
-                setIsButtonClicked(true); // Set the button click state
+                setIsButtonClicked(true);
               }}
               disabled={isButtonClicked} //disable button when "create" clicked for first time
             >
@@ -311,7 +311,7 @@ const Itinerary = () => {
           </div>
           <br />
           <hr></hr>
-          {/* Display Activities only when button is clicked */}
+          {/*display itinerary only when button is clicked / state becomes true */}
           {isButtonClicked && (
             <div>
               <br></br>
@@ -341,11 +341,11 @@ const Itinerary = () => {
                 Title: {titleRef.current.value}
               </p>
               <br></br>
-              {/* iterate thru array created by generateDayRows and creates div for each Day */}
+              {/* iterate thru array created by generateDayRows and creates div for each Day, at the same time iterates through the days so activitiesByDay can check if there are activities for each day */}
               {generateDayRows().map((day, index) => (
                 <div key={index}>
                   <h5>{day}</h5>
-                  {/* checks for activities associated with respective day of the iteration, and displays them*/}
+                  {/* checks for activities associated with respective day of the iteration that generateDayRows is running, and displays them*/}
                   {/* activitiesByDay - object holding info about activities organised by day */}
                   {/* index + 1: JS index starts with 0, hence adjustment made to ensure it's checking the right day vs that of generateDayRows' iteration */}
                   {/* ? - optional chaining (to safely access properties of an object). checks if there are activities for the day of index + 1, if none, will prevent code from breaking and return undefined */}
@@ -411,51 +411,54 @@ const Itinerary = () => {
           >
             Add activities
           </Typography>
-   
-            <div className="filter-buttons" style={{marginTop: "30px", marginBottom: "30px"}}>
-              <button
-                onClick={() => handleFilterSelect("All")}
-                className={`filter-button ${
-                  selectedFilter === "All" ? "active" : ""
-                }`}
-              >
-                All
-              </button>
-              <button
-                onClick={() => handleFilterSelect("Food & Drinks")}
-                className={`filter-button ${
-                  selectedFilter === "Food & Drinks" ? "active" : ""
-                }`}
-              >
-                Food & Drinks
-              </button>
-              <button
-                onClick={() => handleFilterSelect("Hotels")}
-                className={`filter-button ${
-                  selectedFilter === "Hotels" ? "active" : ""
-                }`}
-              >
-                Hotels
-              </button>
-              <button
-                onClick={() => handleFilterSelect("Things to do")}
-                className={`filter-button ${
-                  selectedFilter === "Things to do" ? "active" : ""
-                }`}
-              >
-                Things to Do
-              </button>
-              <button
-                onClick={() => handleFilterSelect("Things to see")}
-                className={`filter-button ${
-                  selectedFilter === "Things to see" ? "active" : ""
-                }`}
-              >
-                Things to See
-              </button>
-            </div>
 
-            <Grid
+          <div
+            className="filter-buttons"
+            style={{ marginTop: "30px", marginBottom: "30px" }}
+          >
+            <button
+              onClick={() => handleFilterSelect("All")}
+              className={`filter-button ${
+                selectedFilter === "All" ? "active" : ""
+              }`}
+            >
+              All
+            </button>
+            <button
+              onClick={() => handleFilterSelect("Hotels")}
+              className={`filter-button ${
+                selectedFilter === "Hotels" ? "active" : ""
+              }`}
+            >
+              Hotels
+            </button>
+            <button
+              onClick={() => handleFilterSelect("Food & Drinks")}
+              className={`filter-button ${
+                selectedFilter === "Food & Drinks" ? "active" : ""
+              }`}
+            >
+              Food & Drinks
+            </button>
+            <button
+              onClick={() => handleFilterSelect("Things to do")}
+              className={`filter-button ${
+                selectedFilter === "Things to do" ? "active" : ""
+              }`}
+            >
+              Things to Do
+            </button>
+            <button
+              onClick={() => handleFilterSelect("Things to see")}
+              className={`filter-button ${
+                selectedFilter === "Things to see" ? "active" : ""
+              }`}
+            >
+              Things to See
+            </button>
+          </div>
+
+          <Grid
             container
             spacing={3}
             justifyContent="center"

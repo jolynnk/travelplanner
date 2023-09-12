@@ -13,9 +13,10 @@ import React, { useState, useEffect } from "react";
 import DetailsModal from "./DetailsModal";
 
 const ActivityItem = (props) => {
-  const [selectedDay, setSelectedDay] = useState(1); // Default to Day 1
+  const [selectedDay, setSelectedDay] = useState(1); //stores the day to add activity to (handleDayChange function)
   const [showModal, setShowModal] = useState(false);
 
+  //update selectedDay state with the input on which day to add activity to
   const handleDayChange = (event) => {
     setSelectedDay(event.target.value);
   };
@@ -23,7 +24,6 @@ const ActivityItem = (props) => {
   //add activity to itinerary
   const addToTrip = async () => {
     try {
-      // Retrieve the JWT token from localStorage
       const authToken = localStorage.getItem("jwtToken");
 
       const res = await fetch(
@@ -32,7 +32,7 @@ const ActivityItem = (props) => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`, // Include the JWT token in the headers
+            Authorization: `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             activity_id: props.activity_id,
@@ -44,8 +44,7 @@ const ActivityItem = (props) => {
       if (!res.ok) {
         alert("Error adding activity to itinerary");
       } else {
-        //clone existing activities for the day
-        const updatedActivities = { ...props.activitiesByDay };
+        const updatedActivities = { ...props.activitiesByDay }; //clone existing activities for the day
 
         //check if there are activities for selected day, if not create array. if there are activities already, will just add on to existing array
         if (!updatedActivities[selectedDay]) {
@@ -66,7 +65,7 @@ const ActivityItem = (props) => {
         //update state and display via Itinerary.jsx
         props.setActivitiesByDay(updatedActivities);
 
-        // Reset the selected day to Day 1
+        //reset selected day to Day 1
         setSelectedDay(1);
       }
     } catch (error) {
@@ -75,7 +74,7 @@ const ActivityItem = (props) => {
     }
   };
 
-  //chatGPT ref: how do i create a day selection dropdown with the max no. of days being the number that user has input in "number of days" in itinerary form
+  //chatGPT ref: how to create day selection dropdown with max no. of days being the number that user input in "number of days" in itinerary form
   //for user to select which day to add activity to. generates an array of day options with length equal to props.numOfDays
   //Array.from - JS built in function that creates new array from an existing iterable object (based on length: props.numOfDays)
   //(_, index) => - this is a mapping function to iterate through each element of new array. 2 parameters accepted: _ is a placeholder for a variable that is not in use, index represents current index of array
