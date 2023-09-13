@@ -12,21 +12,21 @@ const app = express();
 const port = process.env.PORT || 5004;
 
 const corsOptions = {
-  origin: "http://localhost:5173", // Update this to match your frontend origin
+  origin: "http://localhost:5173",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true, // Enable cookies or authorization headers if needed
+  credentials: true, //enable cookies or authorization headers if needed
 };
 
-// Middleware to parse JSON requests
+//middleware to parse JSON requests
 app.use(express.json());
 app.use(cors(corsOptions));
 
-// Your API routes for registration and login will go here
+//api routes
 app.use("/auth", authRoutes);
 app.use("/api", activityRoutes);
 app.use("/api", itineraryRoutes);
 
-// Error handling middleware
+//rrror handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: "Server Error" });

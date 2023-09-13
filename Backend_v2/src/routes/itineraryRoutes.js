@@ -1,54 +1,32 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../config/db");
-const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middleware/auth");
 
 //create empty itinerary (USER)
-router.post("/itinerary", async (req, res) => {
+router.post("/itinerary", authMiddleware, async (req, res) => {
   const { location, num_of_days, title } = req.body;
+  const userId = req.user.id; //access user ID from req object provided by authMiddleware
 
   try {
-    // Check if the Authorization header exists
-    if (!req.headers.authorization) {
-      return res.status(401).json({ error: "Authorization header is missing" });
-    }
-
-    // Split and process the Authorization header
-    const authHeader = req.headers.authorization;
-    if (authHeader.startsWith("Bearer ")) {
-      const token = authHeader.split(" ")[1];
-
-      // Debug statements to print the token and secret key
-      console.log("Token:", token);
-      console.log("Secret Key:", process.env.SECRET_KEY);
-
-      // Verify and decode the token using your SECRET_KEY from .env
-      const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
-
-      // Extract the user ID from the decoded token
-      const userId = decodedToken.userId;
-
-      //use userId in SQL query to insert into the Itinerary table
-      const query = `
+    const query = `
         INSERT INTO Itinerary (location, num_of_days, title, id)
         VALUES ($1, $2, $3, $4)
         RETURNING *;
       `;
 
-      const newItinerary = await pool.query(query, [
-        location,
-        num_of_days,
-        title,
-        userId,
-      ]);
+    //sends SQL query to database, with actual values from query passed as an array
+    const newItinerary = await pool.query(query, [
+      location,
+      num_of_days,
+      title,
+      userId,
+    ]);
 
-      const itinerary_id = newItinerary.rows[0].itinerary_id;
+    //extract itinerary_id of the newly created itinerary from the first row. return in postman for own reference
+    const itinerary_id = newItinerary.rows[0].itinerary_id;
 
-      res.json({ itinerary_id });
-    } else {
-      res.status(401).json({ error: "Invalid Authorization header format" });
-    }
+    res.json({ itinerary_id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server Error" });
@@ -59,9 +37,9 @@ router.post("/itinerary", async (req, res) => {
 router.patch("/itinerary/update", authMiddleware, async (req, res) => {
   try {
     const { activity_id, day } = req.body;
-    const userId = req.user.id; // Assuming you have middleware that extracts user info from the token
+    const userId = req.user.id;
 
-    // Fetch the user's latest itinerary ID from the itinerary table
+    //fetch user's latest itinerary ID from the itinerary table based on their user id
     const fetchLatestItineraryQuery = `
       SELECT itinerary_id 
       FROM itinerary 
@@ -70,6 +48,7 @@ router.patch("/itinerary/update", authMiddleware, async (req, res) => {
       LIMIT 1
     `;
 
+    //execute query using pool.query method, passing user id as parameter
     const result = await pool.query(fetchLatestItineraryQuery, [userId]);
 
     if (result.rows.length === 0) {
@@ -78,15 +57,16 @@ router.patch("/itinerary/update", authMiddleware, async (req, res) => {
         .json({ message: "No itinerary found for the user" });
     }
 
+    //extract latest itinerary id
     const latestItineraryId = result.rows[0].itinerary_id;
 
-    // Perform database update to insert the activity into the latest itinerary
+    //insert activity into the latest itinerary, using the latest itinerary_id
     const updateQuery = `
       INSERT INTO ItineraryActivity (itinerary_id, activity_id, day)
       VALUES ($1, $2, $3)
     `;
 
-    // Execute the query with your PostgreSQL client
+    //execute query
     await pool.query(updateQuery, [latestItineraryId, activity_id, day]);
 
     res
@@ -101,7 +81,6 @@ router.patch("/itinerary/update", authMiddleware, async (req, res) => {
 });
 
 //remove activities from user's itinerary (USER)
-// Backend route to delete an activity from an itinerary
 router.delete(
   "/itinerary/delete-activity/:itineraryId/:activityId",
   authMiddleware,
@@ -110,14 +89,12 @@ router.delete(
       const userId = req.user.id;
       const { itineraryId, activityId } = req.params;
 
-      // Check if the activity belongs to the specified itinerary and the user has permissions
-
-      // Execute a SQL DELETE statement on the itineraryactivity table
       const deleteActivityQuery = `
       DELETE FROM itineraryactivity
       WHERE itinerary_id = $1 AND activity_id = $2;
     `;
 
+      //execute deletion with itinerary id and activity id as parameters
       const result = await pool.query(deleteActivityQuery, [
         itineraryId,
         activityId,
@@ -142,9 +119,10 @@ router.delete(
 //retrieve user's itineraries (USER)
 router.get("/itineraries/user", authMiddleware, async (req, res) => {
   try {
-    const userId = req.user.id; //extracts user info from the token
+    const userId = req.user.id;
 
-    // Fetch all itineraries for the authenticated user
+    //LEFT JOIN i and ia tables based on itinerary_id column as the overlap
+    //LEFT JOIN ia and a tables based on activity_id column as the overlap
     const query = `
       SELECT
         i.itinerary_id,
@@ -168,8 +146,8 @@ router.get("/itineraries/user", authMiddleware, async (req, res) => {
       WHERE
         i.id = $1;
     `;
-    const values = [userId];
 
+    const values = [userId];
     const result = await pool.query(query, values);
 
     res.json(result.rows);
@@ -183,11 +161,10 @@ router.get("/itineraries/user", authMiddleware, async (req, res) => {
 
 //delete user's itinerary (USER)
 router.delete("/itinerary/delete/:id", authMiddleware, async (req, res) => {
-  const userId = req.user.id; // Extract user ID from the token
-  const itineraryId = req.params.id; // Extract itinerary ID from the URL parameter
+  const userId = req.user.id;
+  const itineraryId = req.params.id;
 
   try {
-    // Check if the itinerary belongs to the authenticated user
     const itinerary = await pool.query(
       "SELECT * FROM itinerary WHERE id = $1 AND itinerary_id = $2",
       [userId, itineraryId]
@@ -197,12 +174,12 @@ router.delete("/itinerary/delete/:id", authMiddleware, async (req, res) => {
       return res.status(404).json({ message: "Itinerary not found" });
     }
 
-    // Delete related records in the itineraryactivity table first
+    //delete related records in the itineraryactivity table first
     await pool.query("DELETE FROM itineraryactivity WHERE itinerary_id = $1", [
       itineraryId,
     ]);
 
-    // If the itinerary belongs to the user, delete it
+    //then delete related records in itinerary table
     await pool.query("DELETE FROM itinerary WHERE itinerary_id = $1", [
       itineraryId,
     ]);

@@ -1,9 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../config/db"); // Import your PostgreSQL pool configuration
-// const checkAdmin = require("../middleware/checkAdmin");
-// const authMiddleware = require("../middleware/auth");
-// const { check } = require("express-validator");
+const pool = require("../config/db");
 
 // Get a list of all activities (USER, ADMIN)
 router.get("/activities", async (req, res) => {

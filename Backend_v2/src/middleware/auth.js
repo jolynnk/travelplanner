@@ -1,23 +1,21 @@
 const jwt = require("jsonwebtoken");
 
-// Middleware function to extract user ID from JWT
+//middleware function to authenticate incoming requests based on JWTs. if JWT valid, makes user information available in the request, then allowing protected routes to be accessed by authenticated users
+
 function authMiddleware(req, res, next) {
-  // Get the JWT token from the request headers
-  const token = req.headers.authorization.split(" ")[1];
+  const token = req.headers.authorization.split(" ")[1]; //get JWT token from the request headers. authorisation header contains token in the format "Bearer TOKEN_STRING", so it splits header value and takes second part (which is TOKEN_STRING)
 
   try {
-    // Verify the token using your secret key
-    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY); //verify token using secret key
 
-    // Add the user ID and role to the request object
+    //if token successfully verified, add user ID and role to the request object
     req.user = {
       id: decodedToken.userId,
       user: decodedToken.user,
-      role: decodedToken.role, // Include the user's role here
+      role: decodedToken.role,
     };
 
-    // Continue to the next middleware or route handler
-    next();
+    next(); //continue to next middleware/route handler
   } catch (error) {
     res.status(401).json({ error: "Unauthorized" });
   }
