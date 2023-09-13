@@ -73,22 +73,29 @@ const UserItineraries = () => {
   //group activities by itinerary (instead of listing every single activity)
   const itinerariesWithActivities = {};
 
-  userItineraries.forEach((itinerary) => { //iterates thru userItineraries array/state
-    if (!itinerariesWithActivities[itinerary.itinerary_id]) { //if nothing in current itinerary id of the empty array (which there won't be)...
-      itinerariesWithActivities[itinerary.itinerary_id] = { //create new object for itinerary id with empty activities array
+  userItineraries.forEach((itinerary) => {
+    //iterates thru userItineraries array/state
+    if (!itinerariesWithActivities[itinerary.itinerary_id]) {
+      //if nothing in current itinerary id of the empty array (which there won't be)...
+      itinerariesWithActivities[itinerary.itinerary_id] = {
+        //create new object for itinerary id with empty activities array
         ...itinerary,
         activities: [],
       };
     }
 
-    itinerariesWithActivities[itinerary.itinerary_id].activities.push({ //push the following data into the activities array of the itinerary id object
+    itinerariesWithActivities[itinerary.itinerary_id].activities.push({
+      //push the following data into the activities array of the itinerary id object
       activity_id: itinerary.activity_id,
       day: itinerary.day,
       activity_title: itinerary.activity_title,
       activity_type_name: itinerary.activity_type_name,
       description: itinerary.description,
+      image: itinerary.image,
     });
   });
+
+  console.log(itinerariesWithActivities);
 
   return (
     <div
@@ -98,37 +105,45 @@ const UserItineraries = () => {
       }}
     >
       <h2>Your itineraries</h2>
-      <br/>
-      <Card style={{
-        color: "#4f6369",
-        padding: "35px",
-      }}>
-      <ul>
-        {/* Object.values converts the object's values into array so that it can be mapped over */}
-        {Object.values(itinerariesWithActivities).map((itinerary) => (
-          <div key={itinerary.itinerary_id}>
-            <h4>{itinerary.itinerary_title}</h4>
-            <p>City: {itinerary.itinerary_location}</p>
-            <p>Trip days: {itinerary.num_of_days}</p>
-            <ul>
-              {itinerary.activities.map((activity) => (
-                <li key={activity.activity_id}>
-                  <h6>
-                    [Day {activity.day}] {activity.activity_title}
-                  </h6>
-                  <p>Type: {activity.activity_type_name}</p>
-                </li>
-              ))}
-            </ul>
-            <Button
-              onClick={() => handleDeleteItinerary(itinerary.itinerary_id)}
-            >
-              Delete Itinerary
-            </Button>
-            <hr></hr>
-          </div>
-        ))}
-      </ul>
+      <br />
+      <Card
+        style={{
+          color: "#4f6369",
+          padding: "35px",
+        }}
+      >
+        <ul>
+          {/* Object.values converts the object's values into array so that it can be mapped over */}
+          {Object.values(itinerariesWithActivities).map((itinerary) => (
+            <div key={itinerary.itinerary_id}>
+              <h4>{itinerary.itinerary_title}</h4>
+              <p>City: {itinerary.itinerary_location}</p>
+              <p>Trip days: {itinerary.num_of_days}</p>
+              <ul>
+                {itinerary.activities.map((activity) => (
+                  <li key={activity.activity_id} style={{ paddingBottom: '20px' }}>
+                    <h6>
+                      [Day {activity.day}] {activity.activity_title}
+                    </h6>
+                    <p>Type: {activity.activity_type_name}</p>
+                    <img
+                      src={activity.image}
+                      alt={activity.title}
+                      width="180px"
+                      style={{ marginLeft: '30px' }}
+                    />
+                  </li>
+                ))}
+              </ul>
+              <Button
+                onClick={() => handleDeleteItinerary(itinerary.itinerary_id)}
+              >
+                Delete Itinerary
+              </Button>
+              <hr></hr>
+            </div>
+          ))}
+        </ul>
       </Card>
     </div>
   );
