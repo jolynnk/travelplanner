@@ -26,7 +26,7 @@ app.use("/auth", authRoutes);
 app.use("/api", activityRoutes);
 app.use("/api", itineraryRoutes);
 
-//rrror handling middleware
+//error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: "Server Error" });
