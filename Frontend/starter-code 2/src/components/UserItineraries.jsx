@@ -121,7 +121,10 @@ const UserItineraries = () => {
               <p>Trip days: {itinerary.num_of_days}</p>
               <ul>
                 {itinerary.activities.map((activity) => (
-                  <li key={activity.activity_id} style={{ paddingBottom: '20px' }}>
+                  <li
+                    key={activity.activity_id}
+                    style={{ paddingBottom: "20px" }}
+                  >
                     <h6>
                       [Day {activity.day}] {activity.activity_title}
                     </h6>
@@ -130,7 +133,7 @@ const UserItineraries = () => {
                       src={activity.image}
                       alt={activity.title}
                       width="180px"
-                      style={{ marginLeft: '30px' }}
+                      style={{ marginLeft: "30px" }}
                     />
                   </li>
                 ))}

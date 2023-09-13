@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../config/db");
 
-// Get a list of all activities (USER, ADMIN)
+//get all activities (USER, ADMIN)
 router.get("/activities", async (req, res) => {
   try {
     const query = "SELECT * FROM Activity";
@@ -14,25 +14,7 @@ router.get("/activities", async (req, res) => {
   }
 });
 
-// Get a single activity by ID (USER, ADMIN)
-router.get("/activities/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const query = "SELECT * FROM Activity WHERE activity_id = $1";
-    const activity = await pool.query(query, [id]);
-
-    if (activity.rows.length === 0) {
-      return res.status(404).json({ error: "Activity not found" });
-    }
-
-    res.json(activity.rows[0]);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server Error" });
-  }
-});
-
-// Get a list of all activity types for update modal dropdown (ADMIN)
+//get all activity types for update modal dropdown (ADMIN)
 router.get("/activity-type", async (req, res) => {
   try {
     const query = "SELECT * FROM ActivityType";
@@ -44,7 +26,7 @@ router.get("/activity-type", async (req, res) => {
   }
 });
 
-// Create a new activity (ADMIN)
+//create new activity (ADMIN)
 router.post("/activities", async (req, res) => {
   const {
     title,
@@ -83,7 +65,7 @@ router.post("/activities", async (req, res) => {
   }
 });
 
-// Update an existing activity by ID (ADMIN)
+//update activity by id (ADMIN)
 router.patch("/activities/:id", async (req, res) => {
   const { id } = req.params;
   const {
@@ -130,17 +112,17 @@ router.patch("/activities/:id", async (req, res) => {
   }
 });
 
-// Delete an activity by ID (USER, ADMIN)
+//delete activity by id (USER, ADMIN)
 router.delete("/activities/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Step 1: Delete records from itineraryactivity
+    //delete relevant info from itineraryactivity
     const deleteItineraryActivityQuery =
       "DELETE FROM itineraryactivity WHERE activity_id = $1";
     await pool.query(deleteItineraryActivityQuery, [id]);
 
-    // Step 2: Delete the activity record from the activity table
+    //delete relevant info from activity table
     const deleteActivityQuery =
       "DELETE FROM activity WHERE activity_id = $1 RETURNING *";
     const deletedActivity = await pool.query(deleteActivityQuery, [id]);
