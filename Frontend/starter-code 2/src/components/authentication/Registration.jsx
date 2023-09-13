@@ -2,18 +2,19 @@ import { TextField, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
 
 const Registration = () => {
-  const [user, setUser] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [user, setUser] = useState(""); //stores inputted username
+  const [password, setPassword] = useState(""); //stores inputted password
+  const [error, setError] = useState(""); //stores error at invalid login
 
-  const handleUserChange = (e) => {
+  const handleUserChange = (e) => { //update state with user input
     setUser(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e) => { //update state with user input
     setPassword(e.target.value);
   };
 
+  //user registration function
   const handleRegistration = async () => {
     try {
       const response = await fetch(
@@ -21,7 +22,7 @@ const Registration = () => {
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json", //set content type to json
           },
           body: JSON.stringify({ user, password }),
         }

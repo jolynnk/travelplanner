@@ -5,41 +5,39 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material"; // Import icons for the show/hide toggle
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import React, { useState } from "react";
 import jwtDecode from "jwt-decode";
 
 const Login = () => {
-  const [user, setUser] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [user, setUser] = useState(""); //stores inputted username
+  const [password, setPassword] = useState(""); //stores inputted password
+  const [error, setError] = useState(""); //stores error at invalid login
   const [passwordVisible, setPasswordVisible] = useState(false);
-  //   const [authToken, setAuthToken] = useState("");
 
-  const handleUserChange = (e) => {
+  const handleUserChange = (e) => { //update state with user input
     setUser(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e) => { //update state with user input
     setPassword(e.target.value);
   };
 
-  const handleTogglePasswordVisibility = () => {
+  const handleTogglePasswordVisibility = () => { //toggles between true and false on passwordVisible state
     setPasswordVisible(!passwordVisible);
   };
 
+  //user login function
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
-
-    console.log("handleLogin function is called"); // Add this line
+    e.preventDefault(); //prevent default form submission behavior
 
     try {
       const response = await fetch(
         import.meta.env.VITE_SERVER + "/auth/login",
         {
-          method: "POST",
+          method: "POST", //POST sends user credentials to server
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json", //set content type to json
           },
           body: JSON.stringify({ user, password }),
         }
@@ -47,26 +45,13 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Data from server:", data);
-
-        const jwtToken = data.token; // Extract the JWT token from the response
-        // Store the token in a state, context, or local storage
-        // Example using state:
-        // Store the JWT token in localStorage (browser storage and be retrieved when needed - note potential security issues) to be used in itinerary.jsx (can also use usecontext)
-
-        console.log("JWT Token:", jwtToken);
-
-        const decoded = jwtDecode(jwtToken);
-        console.log(decoded);
-
-        const userRole = data.role || [];
-        console.log("User Roles:", userRole);
+        const jwtToken = data.token; //extract JWT token from response
+        const decoded = jwtDecode(jwtToken); //decode JWT token to access its payload
 
         localStorage.setItem("jwtToken", jwtToken);
-        // Store the user role in localStorage
-        localStorage.setItem("userRole", JSON.stringify(decoded.role));
+        localStorage.setItem("userRole", JSON.stringify(decoded.role)); //store the user role in localStorage (brower storage, to be retrieved when needed)
 
-        window.location.href = "/";
+        window.location.href = "/"; //direct user to main page
       } else {
         setError("Invalid email or password. Please try again.");
       }
@@ -97,7 +82,7 @@ const Login = () => {
           id="outlined-basic"
           label="Email"
           variant="outlined"
-          style={{ width: "300px" }} // Adjust the width as needed
+          style={{ width: "300px" }}
           value={user}
           onChange={handleUserChange}
         />
@@ -106,8 +91,8 @@ const Login = () => {
           id="outlined-basic"
           label="Password"
           variant="outlined"
-          style={{ width: "300px" }} // Adjust the width as needed
-          type={passwordVisible ? "text" : "password"} // Toggle between "text" and "password" types
+          style={{ width: "300px" }}
+          type={passwordVisible ? "text" : "password"}
           value={password}
           onChange={handlePasswordChange}
           InputProps={{
@@ -115,9 +100,9 @@ const Login = () => {
               <InputAdornment position="end">
                 <IconButton onClick={handleTogglePasswordVisibility} edge="end">
                   {passwordVisible ? (
-                    <Visibility /> // Show "eye" icon when password is visible
+                    <Visibility /> //show "eye" icon when password visible
                   ) : (
-                    <VisibilityOff /> // Show "eye slash" icon when password is hidden
+                    <VisibilityOff /> //show "eye slash" icon when password hidden
                   )}
                 </IconButton>
               </InputAdornment>

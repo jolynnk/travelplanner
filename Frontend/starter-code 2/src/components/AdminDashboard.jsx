@@ -3,22 +3,20 @@ import React, { useState, useEffect, useRef } from "react";
 import AdminUpdateModal from "./AdminUpdateModal";
 
 const AdminDashboard = () => {
-  const [activity, setActivity] = useState([]);
+  const [activity, setActivity] = useState([]); //stores list of activities from getActivities function
   const [showAddActivityForm, setShowAddActivityForm] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [selectedActivity, setSelectedActivity] = useState(null);
-  const [activityTypeName, setActivityTypeName] = useState("");
+  const [selectedActivity, setSelectedActivity] = useState(null); //stores activity selected for updating purpose
+  const [activityTypeName, setActivityTypeName] = useState(""); //stores selection of activity_type_name in activity creation form
 
   //toggle visibility of add activity form
   const toggleAddActivityForm = () => {
     setShowAddActivityForm(!showAddActivityForm);
   };
 
-  // Retrieve the user role from localStorage (default to "user" if not found)
+  //retrieve user role from localStorage and default to "user" if not found
   const userRole = JSON.parse(localStorage.getItem("userRole")) || [];
-  console.log(userRole);
 
-  const activity_type_nameRef = useRef();
   const titleRef = useRef();
   const descriptionRef = useRef();
   const districtRef = useRef();
@@ -34,7 +32,6 @@ const AdminDashboard = () => {
       const res = await fetch(import.meta.env.VITE_SERVER + "/api/activities");
       const data = await res.json();
       setActivity(data);
-      console.log(data);
 
       if (!res.ok) {
         alert("error fetching data");
@@ -45,28 +42,9 @@ const AdminDashboard = () => {
     }
   };
 
-  //get single activity (USER & ADMIN)
-  // const getActivityById = async () => {
-  //   try {
-  //     const res = await fetch(
-  //       import.meta.env.VITE_SERVER + "/api/activities/:id"
-  //     );
-
-  //     if (!res.ok) {
-  //       alert("Error fetching activity");
-  //     } else {
-  //       const data = await res.json();
-  //       // Handle the retrieved activity data
-  //     }
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     alert("An error has occurred");
-  //   }
-  // };
-
   //create activity (ADMIN)
   const createActivity = async (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+    e.preventDefault(); //prevent default form submission behavior
 
     try {
       const res = await fetch(import.meta.env.VITE_SERVER + "/api/activities", {
@@ -114,7 +92,7 @@ const AdminDashboard = () => {
   const deleteActivity = async (activity_id) => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_SERVER + `/api/activities/${activity_id}`, // Use the activity_id to specify the activity to delete
+        import.meta.env.VITE_SERVER + `/api/activities/${activity_id}`, //use activity_id to specify activity to delete
         {
           method: "DELETE",
         }
@@ -123,7 +101,6 @@ const AdminDashboard = () => {
       if (!res.ok) {
         alert("Error deleting activity");
       } else {
-        // Refresh the activity list after deleting the activity
         getActivities();
       }
     } catch (error) {
@@ -231,7 +208,7 @@ const AdminDashboard = () => {
             <Button
               onClick={() => {
                 setShowModal(true);
-                setSelectedActivity(item.activity_id);
+                setSelectedActivity(item.activity_id); //logging activity id so that updatemodal can register which activity to update
               }}
             >
               Update
@@ -246,19 +223,9 @@ const AdminDashboard = () => {
 
       {showModal && (
         <AdminUpdateModal
-          //   activity_type_nameRef={activity_type_nameRef}
-          //   titleRef={titleRef}
-          //   descriptionRef={descriptionRef}
-          //   districtRef={districtRef}
-          //   addressRef={addressRef}
-          //   ratingsRef={ratingsRef}
-          //   opening_hoursRef={opening_hoursRef}
-          //   costRef={costRef}
-          //   imageRef={imageRef}
-          //   updateActivity={updateActivity}
           showModal={showModal}
           setShowModal={setShowModal}
-          selectedActivity={selectedActivity} // Pass the selected activity data
+          selectedActivity={selectedActivity}
           getActivities={getActivities}
         ></AdminUpdateModal>
       )}

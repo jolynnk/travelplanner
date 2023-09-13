@@ -126,7 +126,7 @@ const ActivityItem = (props) => {
                   width: "87px",
                   marginTop: "20px",
                   marginLeft: "51px",
-                }} // Apply custom height here
+                }}
               >
                 {dayOptions.map((option) => (
                   <MenuItem key={option.day} value={option.day}>

@@ -28,7 +28,7 @@ const NavBar = () => {
                 <NavLink to="/smart-itinerary">Smartinerary™</NavLink>
               </li>
             )}
-            {userRole.includes("admin") && ( // Conditionally render Admin Dashboard link
+            {userRole.includes("admin") && ( //conditionally render Admin Dashboard page
               <li>
                 <NavLink to="/admin-dashboard">Admin Dashboard</NavLink>
               </li>

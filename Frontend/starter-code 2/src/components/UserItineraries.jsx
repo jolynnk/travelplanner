@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Button, Typography, Card } from "@mui/material";
+import { Button, Card } from "@mui/material";
 
-//get all user itineraries (USER)
 const UserItineraries = () => {
-  const [userItineraries, setUserItineraries] = useState([]);
+  const [userItineraries, setUserItineraries] = useState([]); //stores all user's itineraries via getItineraries function
 
+  //get all user itineraries (USER)
   const getItineraries = async () => {
     try {
       const authToken = localStorage.getItem("jwtToken"); //retrieve the authentication token from storage after user logs in
 
       if (!authToken) {
-        // Check if the token is available
+        //check if the token is available
         alert("Authentication token is missing");
         return;
       }
@@ -19,13 +19,11 @@ const UserItineraries = () => {
         import.meta.env.VITE_SERVER + "/api/itineraries/user",
         {
           headers: {
-            Authorization: `Bearer ${authToken}`, // Include the token in the headers to authenticate user's request on the server
+            Authorization: `Bearer ${authToken}`, //include the token in the headers to authenticate user's request on the server
           },
         }
       );
-      console.log("Response:", res); // Log the response object
       const data = await res.json();
-      console.log("Data:", data); // Log the data received from the server
       setUserItineraries(data);
 
       if (!res.ok) {
@@ -41,29 +39,11 @@ const UserItineraries = () => {
     getItineraries();
   }, []);
 
-  const itinerariesWithActivities = {}; // Create an object to group activities by itinerary
-
-  userItineraries.forEach((itinerary) => {
-    if (!itinerariesWithActivities[itinerary.itinerary_id]) {
-      itinerariesWithActivities[itinerary.itinerary_id] = {
-        ...itinerary,
-        activities: [],
-      };
-    }
-
-    itinerariesWithActivities[itinerary.itinerary_id].activities.push({
-      activity_id: itinerary.activity_id,
-      day: itinerary.day,
-      activity_title: itinerary.activity_title,
-      activity_type_name: itinerary.activity_type_name,
-      description: itinerary.description,
-    });
-  });
-
   //delete itinerary (USER)
   const handleDeleteItinerary = async (itineraryId) => {
     try {
       const authToken = localStorage.getItem("jwtToken");
+
       if (!authToken) {
         alert("Authentication token is missing");
         return;
@@ -80,7 +60,7 @@ const UserItineraries = () => {
       );
 
       if (res.status === 200) {
-        getItineraries();
+        getItineraries(); //does not refresh page with latest itinerary
       } else {
         alert("Error deleting itinerary");
       }
@@ -89,6 +69,26 @@ const UserItineraries = () => {
       alert("An error has occurred");
     }
   };
+
+  //group activities by itinerary (instead of listing every single activity)
+  const itinerariesWithActivities = {};
+
+  userItineraries.forEach((itinerary) => { //iterates thru userItineraries array/state
+    if (!itinerariesWithActivities[itinerary.itinerary_id]) { //if nothing in current itinerary id of the empty array (which there won't be)...
+      itinerariesWithActivities[itinerary.itinerary_id] = { //create new object for itinerary id with empty activities array
+        ...itinerary,
+        activities: [],
+      };
+    }
+
+    itinerariesWithActivities[itinerary.itinerary_id].activities.push({ //push the following data into the activities array of the itinerary id object
+      activity_id: itinerary.activity_id,
+      day: itinerary.day,
+      activity_title: itinerary.activity_title,
+      activity_type_name: itinerary.activity_type_name,
+      description: itinerary.description,
+    });
+  });
 
   return (
     <div
@@ -104,6 +104,7 @@ const UserItineraries = () => {
         padding: "35px",
       }}>
       <ul>
+        {/* Object.values converts the object's values into array so that it can be mapped over */}
         {Object.values(itinerariesWithActivities).map((itinerary) => (
           <div key={itinerary.itinerary_id}>
             <h4>{itinerary.itinerary_title}</h4>

@@ -3,8 +3,8 @@ import React, { useRef, useState, useEffect } from "react";
 import styles from "./Modal.module.css";
 
 const AdminUpdateModal = (props) => {
-  const [activityTypes, setActivityTypes] = useState([]);
-  const [selectedActivityType, setSelectedActivityType] = useState(""); // To store the selected activity type
+  const [activityTypes, setActivityTypes] = useState([]); //stores the different activity types
+  const [selectedActivityType, setSelectedActivityType] = useState(""); //stores the selected activity type
 
   const titleRef = useRef();
   const descriptionRef = useRef();
@@ -15,8 +15,6 @@ const AdminUpdateModal = (props) => {
   const costRef = useRef();
   const imageRef = useRef();
 
-  console.log("Selected Activity:", props.selectedActivity);
-
   //fetch activity types for dropdown usage
   const fetchActivityTypes = async () => {
     try {
@@ -26,7 +24,6 @@ const AdminUpdateModal = (props) => {
       if (res.ok) {
         const data = await res.json();
         setActivityTypes(data);
-        console.log(data);
       } else {
         console.error("Error fetching activity types");
       }
@@ -41,8 +38,7 @@ const AdminUpdateModal = (props) => {
 
   //update activity (ADMIN)
   const updateActivity = async () => {
-    const activityId = props.selectedActivity; // Get the activity_id from props
-    console.log(activityId);
+    const activityId = props.selectedActivity;
 
     try {
       const existingActivityDetails = await fetch(
@@ -55,7 +51,7 @@ const AdminUpdateModal = (props) => {
 
       const existingActivityData = await existingActivityDetails.json();
 
-      // Update each field conditionally, prioritising what was keyed into the fields. if blank, take info from existingActivityData
+      //update each field, prioritising what was keyed into the fields. if blank, take info from existingActivityData
       existingActivityData.activity_type_name =
         selectedActivityType || existingActivityData.activity_type_name;
       existingActivityData.title =
@@ -109,9 +105,9 @@ const AdminUpdateModal = (props) => {
               Activity Type
             </label>
             <Select
-              className={styles.activityTypeDropdown} // Add a custom class name
-              value={selectedActivityType} // Set the value to the selectedActivityType state
-              onChange={(e) => setSelectedActivityType(e.target.value)} // Update the selectedActivityType state on change
+              className={styles.activityTypeDropdown}
+              value={selectedActivityType}
+              onChange={(e) => setSelectedActivityType(e.target.value)}
               style={{ height: "35px", width: "188px" }}
             >
               {activityTypes.map((type) => (
@@ -149,12 +145,12 @@ const AdminUpdateModal = (props) => {
             <label style={{ padding: "15px 136px 0px 0px" }}>Image</label>
 
             <input type="text" ref={imageRef}></input>
-            <br/>
-            <div style={{margin: "18px 10px 10px -15px"}}>
-            <Button onClick={() => updateActivity(props.selectedActivity)}>
-              Save
-            </Button>
-            <Button onClick={() => props.setShowModal(false)}>Close</Button>
+            <br />
+            <div style={{ margin: "18px 10px 10px -15px" }}>
+              <Button onClick={() => updateActivity(props.selectedActivity)}>
+                Save
+              </Button>
+              <Button onClick={() => props.setShowModal(false)}>Close</Button>
             </div>
           </form>
         </div>

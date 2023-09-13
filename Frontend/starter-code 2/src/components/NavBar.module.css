@@ -4,9 +4,9 @@
   font-family: Roboto;
   background: #8da387;
   display: flex;
-  justify-content: space-between; /* Align items to the ends */
-  align-items: center; /* Vertically center children */
-  padding: 0 2rem; /* Add padding to space out the content */
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
 }
 
 .navbar nav {
@@ -43,8 +43,8 @@
 
 .navbarContent {
   display: flex;
-  justify-content: space-between; /* Spacing between app name and links */
-  align-items: center; /* Vertically center children */
+  justify-content: space-between;
+  align-items: center;
 }
 
 .appName {

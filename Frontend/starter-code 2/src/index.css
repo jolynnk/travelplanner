@@ -23,7 +23,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: flex-start; /* You can adjust this alignment as needed */
+  align-items: flex-start;
 }
 
 /* Container for the entire page */
@@ -34,14 +34,14 @@ body {
 /* Container for the itinerary */
 .itinerary-container {
   flex: 1; /* Make the itinerary container take up remaining space */
-  padding: 20px; /* Add padding for spacing */
+  padding: 20px;
   background: #f2e8d0;
 }
 
 /* Container for the activity cards on the right */
 .activity-container {
   flex: 1;
-  padding: 17px 50px 0px 55px; /* Add padding to the activity container */
+  padding: 17px 50px 0px 55px;
   overflow-y: auto; /* Enable vertical scrolling for activities */
   max-height: 1200px; /* Set a maximum height for the activity container */
   background: white;
@@ -49,42 +49,35 @@ body {
 
 /* Style for each individual activity card */
 .activity-card {
-  margin-bottom: 20px; /* Add margin between activity cards */
-  padding: 10px; /* Add padding to each activity card */
-  /* border: 1px solid #ddd; Add a border for better separation */
-  background-color: #fff; /* Add a background color for clarity */
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #fff;
 }
 
 .roboto-font {
   font-family: "Roboto", sans-serif;
 }
 
-/* Add this CSS to your component's stylesheet or a separate CSS file */
-
-/* Style the filter button container */
 .filter-buttons {
-  margin-bottom: 20px; /* Add spacing at the bottom */
+  margin-bottom: 20px;
 }
 
-/* Style the individual filter buttons */
 .filter-button {
   padding: 10px 20px;
   margin-right: 10px;
-  background-color: #4f6369; /* Background color */
-  color: white; /* Text color */
+  background-color: #4f6369;
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-/* Style the active filter button differently */
 .filter-button.active {
-  background-color: #8da387; /* Change the color for the active button */
+  background-color: #8da387;
 }
 
-/* Add hover effect to the filter buttons */
 .filter-button:hover {
-  background-color: #333; /* Change the background color on hover */
+  background-color: #333;
 }
 
 

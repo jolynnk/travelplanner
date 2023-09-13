@@ -8,7 +8,7 @@ const Itinerary = () => {
   const [numOfDays, setNumOfDays] = useState(3); //store user input on no. of days for itinerary to be created
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [itinerary_id, setitinerary_id] = useState(null); //store newly created itinerary id when itinerary created
-  const [activity, setActivity] = useState([]);
+  const [activity, setActivity] = useState([]); //stores list of activities available (getActivities function)
   const [activitiesByDay, setActivitiesByDay] = useState({}); //to store the activities for each day when addToTrip function called
   // const [userItineraries, setUserItineraries] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("All");
@@ -50,7 +50,6 @@ const Itinerary = () => {
       const res = await fetch(import.meta.env.VITE_SERVER + "/api/activities");
       const data = await res.json();
       setActivity(data);
-      console.log(data);
 
       if (!res.ok) {
         alert("error fetching data");
@@ -98,39 +97,6 @@ const Itinerary = () => {
     getActivities();
   }, []);
 
-  //get user itineraries to refresh activities after deleting from new itinerary
-  // const getItineraries = async () => {
-  //   try {
-  //     const authToken = localStorage.getItem("jwtToken"); //retrieve the authentication token from storage after user logs in
-
-  //     if (!authToken) {
-  //       // Check if the token is available
-  //       alert("Authentication token is missing");
-  //       return;
-  //     }
-
-  //     const res = await fetch(
-  //       import.meta.env.VITE_SERVER + "/api/itineraries/user",
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${authToken}`, // Include the token in the headers to authenticate user's request on the server
-  //         },
-  //       }
-  //     );
-  //     console.log("Response:", res); // Log the response object
-  //     const data = await res.json();
-  //     console.log("Data:", data); // Log the data received from the server
-  //     setUserItineraries(data);
-
-  //     if (!res.ok) {
-  //       alert("error fetching data");
-  //     }
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     alert("an error has occurred");
-  //   }
-  // };
-
   //function to delete activity from itinerary (USER)
   const handleDeleteActivity = async (itineraryId, activityId) => {
     try {
@@ -139,12 +105,6 @@ const Itinerary = () => {
         alert("Authentication token is missing");
         return;
       }
-
-      const apiUrl = `${
-        import.meta.env.VITE_SERVER
-      }/api/itinerary/delete-activity/${itineraryId}/${activityId}`;
-
-      console.log("API Endpoint:", apiUrl); // Log the API endpoint
 
       const res = await fetch(
         `${
@@ -160,8 +120,6 @@ const Itinerary = () => {
 
       if (res.status === 200) {
         alert("Activity deleted successfully");
-        // Remove the deleted activity from the state
-        getItineraries();
       } else {
         alert("Error deleting activity");
       }
@@ -172,12 +130,12 @@ const Itinerary = () => {
   };
 
   const handleFilterSelect = (filter) => {
-    setSelectedFilter(filter);
+    setSelectedFilter(filter); //updates selectedFilter state based on filter selected by user
   };
 
   const filteredActivities = activity.filter((item) => {
     if (selectedFilter === "All") {
-      return true; // Show all activities when "All" is selected
+      return true; //show all activities when "All" selected
     } else {
       return item.activity_type_name === selectedFilter;
     }
