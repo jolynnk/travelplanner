@@ -42,9 +42,11 @@ CREATE TABLE Activity (
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     district VARCHAR(255) NOT NULL,
-    opening_hours TIME NOT NULL,
+    opening_hours TEXT NOT NULL,
     address TEXT NOT NULL,
     ratings VARCHAR(255) NOT NULL,
+    cost TEXT NOT NULL,
+    image TEXT NO NULL,
     FOREIGN KEY (activity_type_name) REFERENCES ActivityType (activity_type_name)
 );
 
