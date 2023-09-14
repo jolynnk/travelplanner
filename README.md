@@ -1,4 +1,4 @@
-# Travelo (Travel Itinerary Planner App)
+# Travelo
 
 A mock travel itinerary planner that helps users plan their trips. 
 
@@ -26,7 +26,7 @@ Travelo contains features for creating itineraries as well as adding and deletin
 - Display of activities with filter function for hotels, food & drinks, things to see, things to do
 - Display of individual activity details via modal
 - Function to create "empty" itinerary based on form inputs of location, number of days of trip, itinerary title
-- Function to add activities to specific days of the itinerary, and to delete them where needed (itneraries as well as their activities will be saved to database)
+- Function to add activities to specific days of the itinerary, and to delete them where needed (itineraries as well as their activities will be saved to database)
 - Display of all user itineraries
 
 **Admin role:**
@@ -36,10 +36,17 @@ Travelo contains features for creating itineraries as well as adding and deletin
 
 ## Tech Stack
 
-**Frontend**: React
-**Backend**: Node.js, Express.js
-**UI Components**: Material UI
-**Database**: PostgreSQL
+**Frontend:**
+React
+
+**Backend:**
+Node.js, Express.js
+
+**UI Components:**
+Material UI
+
+**Database:**
+PostgreSQL
 
 ## Installation
 
