@@ -67,7 +67,7 @@ Backend: ```SECRET_KEY=[replace with your secret key]```
 
 ## Website Wireframe
 
-<img width="756" alt="Wireframe" src="https://github.com/di-wee/Project-Manhatten-D/assets/126299115/c8784613-5ab9-4ea7-9870-9346d3f3230e">
+<img width="804" alt="travelplanner_wireframe" src="https://github.com/jolynnk/travelplanner/assets/126299115/f2d3ca32-1651-4e2b-9bf7-a011cc59389f">
 
 ## ERD
 
