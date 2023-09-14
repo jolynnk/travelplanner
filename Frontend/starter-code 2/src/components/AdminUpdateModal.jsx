@@ -39,7 +39,6 @@ const AdminUpdateModal = (props) => {
   //update activity (ADMIN)
   const updateActivity = async () => {
     const activityId = props.selectedActivity;
-    console.log(activityId)
 
     //get single activity details
     try {
