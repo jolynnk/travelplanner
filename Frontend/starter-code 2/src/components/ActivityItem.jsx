@@ -16,6 +16,8 @@ const ActivityItem = (props) => {
   const [selectedDay, setSelectedDay] = useState(1); //stores the day to add activity to (handleDayChange function)
   const [showModal, setShowModal] = useState(false);
 
+  const userRole = JSON.parse(localStorage.getItem("userRole")) || [];
+
   //update selectedDay state with the input on which day to add activity to
   const handleDayChange = (event) => {
     setSelectedDay(event.target.value);
@@ -117,38 +119,42 @@ const ActivityItem = (props) => {
             </Button>
 
             {/* iterates through dayOptions array. for each option, MenuItem created showing the day no. */}
-            <FormControl>
-              <Select
-                value={selectedDay}
-                onChange={handleDayChange}
+            {userRole.includes("user") && (
+              <FormControl>
+                <Select
+                  value={selectedDay}
+                  onChange={handleDayChange}
+                  sx={{
+                    height: "36px",
+                    width: "87px",
+                    marginTop: "20px",
+                    marginLeft: "51px",
+                  }}
+                >
+                  {dayOptions.map((option) => (
+                    <MenuItem key={option.day} value={option.day}>
+                      Day {option.day}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+            {userRole.includes("user") && (
+              <Button
+                onClick={addToTrip}
+                variant="outlined"
                 sx={{
-                  height: "36px",
-                  width: "87px",
-                  marginTop: "20px",
-                  marginLeft: "51px",
+                  width: "120px",
+                  color: "black",
+                  backgroundColor: "white",
+                  borderColor: "black",
+                  justifyItems: "center",
+                  margin: "10px 5px",
                 }}
               >
-                {dayOptions.map((option) => (
-                  <MenuItem key={option.day} value={option.day}>
-                    Day {option.day}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <Button
-              onClick={addToTrip}
-              variant="outlined"
-              sx={{
-                width: "120px",
-                color: "black",
-                backgroundColor: "white",
-                borderColor: "black",
-                justifyItems: "center",
-                margin: "10px 5px",
-              }}
-            >
-              add to trip
-            </Button>
+                add to trip
+              </Button>
+            )}
           </CardContent>
         </CardActionArea>
       </Card>

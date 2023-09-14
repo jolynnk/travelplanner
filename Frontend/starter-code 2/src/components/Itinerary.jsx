@@ -13,6 +13,8 @@ const Itinerary = () => {
   // const [userItineraries, setUserItineraries] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("All");
 
+  const userRole = JSON.parse(localStorage.getItem("userRole")) || []; //extract user role to grant specific permisions
+
   //create blank itinerary (USER)
   const createItinerary = async () => {
     try {
@@ -148,125 +150,135 @@ const Itinerary = () => {
           className="itinerary-container"
           style={{ maxWidth: "500px", margin: "0 auto" }}
         >
-          <div className={isButtonClicked ? "" : "form-container"}>
-            <Typography
-              variant="h5"
-              style={{
-                fontSize: "20px",
-                color: "#4f6369",
-                fontWeight: "bold",
-              }}
-            >
-              Step 1{" "}
-            </Typography>
-            <Typography
-              variant="h5"
-              style={{
-                fontSize: "28px",
-                marginBottom: "20px",
-                color: "#4f6369",
-                fontWeight: "bold",
-              }}
-            >
-              Create a new itinerary
-            </Typography>
-            <form>
-              <label
+            <div className={isButtonClicked ? "" : "form-container"}>
+            {userRole.includes("user") && (
+              <div>
+              <Typography
+                variant="h5"
                 style={{
+                  fontSize: "20px",
                   color: "#4f6369",
+                  fontWeight: "bold",
                 }}
               >
-                Location:
-                <select
-                  ref={locationRef}
-                  name="location"
+                Step 1{" "}
+              </Typography>
+              <Typography
+                variant="h5"
+                style={{
+                  fontSize: "28px",
+                  marginBottom: "20px",
+                  color: "#4f6369",
+                  fontWeight: "bold",
+                }}
+              >
+                Create a new itinerary
+              </Typography>
+              </div>
+            )}
+              <form>
+                <label
                   style={{
-                    width: "70%",
-                    padding: "5px",
-                    borderRadius: "5px",
-                    margin: "10px",
+                    color: "#4f6369",
                   }}
-                  disabled={isButtonClicked} //disable field when "create" button clicked
                 >
-                  <option value="London">London</option>
-                  <option value="Tokyo" disabled>
-                    Tokyo (coming soon)
-                  </option>
-                  <option value="New York" disabled>
-                    New York (coming soon)
-                  </option>
-                  <option value="Paris" disabled>
-                    Paris (coming soon)
-                  </option>
-                  <option value="Singapore" disabled>
-                    Singapore (coming soon)
-                  </option>
-                </select>
-              </label>
-              <br />
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "10px",
-                  color: "#4f6369",
-                }}
-              >
-                Number of days:
-                <select
-                  name="numberOfDays"
-                  onChange={handleNumOfDaysChange}
+                  Location:
+                  <select
+                    ref={locationRef}
+                    name="location"
+                    style={{
+                      width: "70%",
+                      padding: "5px",
+                      borderRadius: "5px",
+                      margin: "10px",
+                    }}
+                    disabled={isButtonClicked} //disable field when "create" button clicked
+                  >
+                    <option value="London">London</option>
+                    <option value="Tokyo" disabled>
+                      Tokyo (coming soon)
+                    </option>
+                    <option value="New York" disabled>
+                      New York (coming soon)
+                    </option>
+                    <option value="Paris" disabled>
+                      Paris (coming soon)
+                    </option>
+                    <option value="Singapore" disabled>
+                      Singapore (coming soon)
+                    </option>
+                  </select>
+                </label>
+                <br />
+                {userRole.includes("user") && (
+                <label
                   style={{
-                    width: "35%",
-                    padding: "5px",
-                    borderRadius: "5px",
-                    margin: "10px",
+                    display: "block",
+                    marginBottom: "10px",
+                    color: "#4f6369",
                   }}
-                  disabled={isButtonClicked} //disable field when "create" button clicked
                 >
-                  <option value="3">3</option>
-                  <option value="5">5</option>
-                  <option value="7">7</option>
-                </select>
-              </label>
-              <label
-                style={{
-                  color: "#4f6369",
-                }}
-              >
-                Title:
-                <input
-                  ref={titleRef}
-                  name="title"
+                  Number of days:
+                  <select
+                    name="numberOfDays"
+                    onChange={handleNumOfDaysChange}
+                    style={{
+                      width: "35%",
+                      padding: "5px",
+                      borderRadius: "5px",
+                      margin: "10px",
+                    }}
+                    disabled={isButtonClicked} //disable field when "create" button clicked
+                  >
+                    <option value="3">3</option>
+                    <option value="5">5</option>
+                    <option value="7">7</option>
+                  </select>
+                </label>
+                )}
+                {userRole.includes("user") && (
+                <label
                   style={{
-                    width: "75%",
-                    padding: "5px",
-                    borderRadius: "5px",
-                    margin: "8px",
-                    border: "1px solid #ccc",
+                    color: "#4f6369",
                   }}
-                  disabled={isButtonClicked} //disable field when "create" button clicked
-                />
-              </label>
-              <br />
-              <br />
-            </form>
-            <Button
-              variant="contained"
-              color="primary"
-              style={{
-                width: "20%",
-                backgroundColor: "#4f6369",
-                color: "white",
-              }}
-              onClick={() => {
-                createItinerary();
-                setIsButtonClicked(true);
-              }}
-              disabled={isButtonClicked} //disable button when "create" clicked for first time
-            >
-              Create
-            </Button>
-          </div>
+                >
+                  Title:
+                  <input
+                    ref={titleRef}
+                    name="title"
+                    style={{
+                      width: "75%",
+                      padding: "5px",
+                      borderRadius: "5px",
+                      margin: "8px",
+                      border: "1px solid #ccc",
+                    }}
+                    disabled={isButtonClicked} //disable field when "create" button clicked
+                  />
+                </label>
+                )}
+                <br />
+                <br />
+              </form>
+              {userRole.includes("user") && (
+              <Button
+                variant="contained"
+                color="primary"
+                style={{
+                  width: "20%",
+                  backgroundColor: "#4f6369",
+                  color: "white",
+                }}
+                onClick={() => {
+                  createItinerary();
+                  setIsButtonClicked(true);
+                }}
+                disabled={isButtonClicked} //disable button when "create" clicked for first time
+              >
+                Create
+              </Button>
+              )}
+            </div>
           <br />
           <hr></hr>
           {/*display itinerary only when button is clicked / state becomes true */}
@@ -348,28 +360,31 @@ const Itinerary = () => {
           )}
         </div>
         <div className="activity-container">
-          <Typography
-            variant="h5"
-            style={{
-              fontSize: "20px",
-              color: "#4f6369",
-              fontWeight: "bold",
-            }}
-          >
-            Step 2
-          </Typography>
-          <Typography
-            variant="h5"
-            style={{
-              fontSize: "28px",
-              marginBottom: "20px",
-              color: "#4f6369",
-              fontWeight: "bold",
-            }}
-          >
-            Add activities
-          </Typography>
-
+          {userRole.includes("user") && (
+            <Typography
+              variant="h5"
+              style={{
+                fontSize: "20px",
+                color: "#4f6369",
+                fontWeight: "bold",
+              }}
+            >
+              Step 2
+            </Typography>
+          )}
+          {userRole.includes("user") && (
+            <Typography
+              variant="h5"
+              style={{
+                fontSize: "28px",
+                marginBottom: "20px",
+                color: "#4f6369",
+                fontWeight: "bold",
+              }}
+            >
+              Add activities
+            </Typography>
+          )}
           <div
             className="filter-buttons"
             style={{ marginTop: "30px", marginBottom: "30px" }}
