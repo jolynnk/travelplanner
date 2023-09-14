@@ -143,6 +143,7 @@ Backend: ```SECRET_KEY=[replace with your secret key]```
 ## Next Steps
 
 - User to be able to view the itineraries created by other users
+- Admin to be able to upload images into the database when creating new activity
 - Implement Smartinerary feature where a customised itinerary will be provided to the user after they input their preferences on their ideal trip (type of holiday, favourite cuisines, budget etc)
 - Implement map routing feature where directions will be provided for user to move between places
 
