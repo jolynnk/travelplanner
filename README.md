@@ -101,11 +101,11 @@ Backend: ```SECRET_KEY=[replace with your secret key]```
 
 ### Admin Dashboard
 
-<img width="1440" alt="admin_dashboard" src="https://github.com/jolynnk/travelplanner/assets/126299115/ce63df51-af5e-4881-b0b8-8596c93131e6">
+<img width="1440" alt="admin_dashboard" src="https://github.com/jolynnk/travelplanner/assets/126299115/5adf39eb-8a0d-41e2-acb8-361bbd87a38b">
 
 ### Create New Activity Form
 
-<img width="1440" alt="activity_creation_form" src="https://github.com/jolynnk/travelplanner/assets/126299115/be43e4fa-94b7-485b-a26e-575cb99b698a">
+<img width="1440" alt="activity_creation_form" src="https://github.com/jolynnk/travelplanner/assets/126299115/7c489f72-1207-461b-9961-bd2054521de4">
 
 ### Update Activity Form
 
