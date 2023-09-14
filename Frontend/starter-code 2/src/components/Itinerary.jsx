@@ -139,7 +139,7 @@ const Itinerary = () => {
     if (selectedFilter === "All") {
       return true; //show all activities when "All" selected
     } else {
-      return item.activity_type_name === selectedFilter; //return only activities by activity_type_name
+      return item.activity_type_name === selectedFilter; //return only activities where activity name is equivalent to selectedFilter
     }
   });
 
@@ -150,67 +150,67 @@ const Itinerary = () => {
           className="itinerary-container"
           style={{ maxWidth: "500px", margin: "0 auto" }}
         >
-            <div className={isButtonClicked ? "" : "form-container"}>
+          <div className={isButtonClicked ? "" : "form-container"}>
             {userRole.includes("user") && (
               <div>
-              <Typography
-                variant="h5"
-                style={{
-                  fontSize: "20px",
-                  color: "#4f6369",
-                  fontWeight: "bold",
-                }}
-              >
-                Step 1{" "}
-              </Typography>
-              <Typography
-                variant="h5"
-                style={{
-                  fontSize: "28px",
-                  marginBottom: "20px",
-                  color: "#4f6369",
-                  fontWeight: "bold",
-                }}
-              >
-                Create a new itinerary
-              </Typography>
-              </div>
-            )}
-              <form>
-                <label
+                <Typography
+                  variant="h5"
                   style={{
+                    fontSize: "20px",
                     color: "#4f6369",
+                    fontWeight: "bold",
                   }}
                 >
-                  Location:
-                  <select
-                    ref={locationRef}
-                    name="location"
-                    style={{
-                      width: "70%",
-                      padding: "5px",
-                      borderRadius: "5px",
-                      margin: "10px",
-                    }}
-                    disabled={isButtonClicked} //disable field when "create" button clicked
-                  >
-                    <option value="London">London</option>
-                    <option value="Tokyo" disabled>
-                      Tokyo (coming soon)
-                    </option>
-                    <option value="New York" disabled>
-                      New York (coming soon)
-                    </option>
-                    <option value="Paris" disabled>
-                      Paris (coming soon)
-                    </option>
-                    <option value="Singapore" disabled>
-                      Singapore (coming soon)
-                    </option>
-                  </select>
-                </label>
-                <br />
-                {userRole.includes("user") && (
+                  Step 1{" "}
+                </Typography>
+                <Typography
+                  variant="h5"
+                  style={{
+                    fontSize: "28px",
+                    marginBottom: "20px",
+                    color: "#4f6369",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Create a new itinerary
+                </Typography>
+              </div>
+            )}
+            <form>
+              <label
+                style={{
+                  color: "#4f6369",
+                }}
+              >
+                Location:
+                <select
+                  ref={locationRef}
+                  name="location"
+                  style={{
+                    width: "70%",
+                    padding: "5px",
+                    borderRadius: "5px",
+                    margin: "10px",
+                  }}
+                  disabled={isButtonClicked} //disable field when "create" button clicked
+                >
+                  <option value="London">London</option>
+                  <option value="Tokyo" disabled>
+                    Tokyo (coming soon)
+                  </option>
+                  <option value="New York" disabled>
+                    New York (coming soon)
+                  </option>
+                  <option value="Paris" disabled>
+                    Paris (coming soon)
+                  </option>
+                  <option value="Singapore" disabled>
+                    Singapore (coming soon)
+                  </option>
+                </select>
+              </label>
+              <br />
+              {userRole.includes("user") && (
                 <label
                   style={{
                     display: "block",
@@ -235,8 +235,8 @@ const Itinerary = () => {
                     <option value="7">7</option>
                   </select>
                 </label>
-                )}
-                {userRole.includes("user") && (
+              )}
+              {userRole.includes("user") && (
                 <label
                   style={{
                     color: "#4f6369",
@@ -256,11 +256,11 @@ const Itinerary = () => {
                     disabled={isButtonClicked} //disable field when "create" button clicked
                   />
                 </label>
-                )}
-                <br />
-                <br />
-              </form>
-              {userRole.includes("user") && (
+              )}
+              <br />
+              <br />
+            </form>
+            {userRole.includes("user") && (
               <Button
                 variant="contained"
                 color="primary"
@@ -277,8 +277,8 @@ const Itinerary = () => {
               >
                 Create
               </Button>
-              )}
-            </div>
+            )}
+          </div>
           <br />
           <hr></hr>
           {/*display itinerary only when button is clicked / state becomes true */}
