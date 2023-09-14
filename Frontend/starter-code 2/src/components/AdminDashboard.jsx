@@ -180,8 +180,8 @@ const AdminDashboard = () => {
       <Grid
         container
         spacing={1}
-        justifyContent="center"
-        alignItems="center"
+        justifyContent="left"
+        alignItems="left"
         padding="20px 15px 0px 35px"
       >
         {activity.map((item) => (
