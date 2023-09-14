@@ -14,6 +14,24 @@ router.get("/activities", async (req, res) => {
   }
 });
 
+//get a single activity by ID (ADMIN update modal)
+router.get("/activities/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const query = "SELECT * FROM Activity WHERE activity_id = $1";
+    const activity = await pool.query(query, [id]);
+
+    if (activity.rows.length === 0) {
+      return res.status(404).json({ error: "Activity not found" });
+    }
+
+    res.json(activity.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
 //get all activity types for update modal dropdown (ADMIN)
 router.get("/activity-type", async (req, res) => {
   try {

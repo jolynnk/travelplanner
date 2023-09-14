@@ -39,7 +39,9 @@ const AdminUpdateModal = (props) => {
   //update activity (ADMIN)
   const updateActivity = async () => {
     const activityId = props.selectedActivity;
+    console.log(activityId)
 
+    //get single activity details
     try {
       const existingActivityDetails = await fetch(
         `${import.meta.env.VITE_SERVER}/api/activities/${activityId}`
