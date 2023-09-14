@@ -82,6 +82,10 @@ Backend: ```SECRET_KEY=[replace with your secret key]```
 
 ## Screenshots
 
+### Landing Page
+
+<img width="1440" alt="landing_page" src="https://github.com/jolynnk/travelplanner/assets/126299115/8d44ea57-0779-4239-9a44-3e02598b9b71">
+
 ### Registration Page
 
 <img width="1440" alt="registration" src="https://github.com/jolynnk/travelplanner/assets/126299115/01956b1f-942d-4567-a0e4-6e14a5c1e74d">
@@ -138,6 +142,7 @@ Backend: ```SECRET_KEY=[replace with your secret key]```
 
 ## Next Steps
 
+- User to be able to view the itineraries created by other users
 - Implement Smartinerary feature where a customised itinerary will be provided to the user after they input their preferences on their ideal trip (type of holiday, favourite cuisines, budget etc)
 - Implement map routing feature where directions will be provided for user to move between places
 
