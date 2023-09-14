@@ -139,7 +139,7 @@ const Itinerary = () => {
     if (selectedFilter === "All") {
       return true; //show all activities when "All" selected
     } else {
-      return item.activity_type_name === selectedFilter;
+      return item.activity_type_name === selectedFilter; //return only activities by activity_type_name
     }
   });
 

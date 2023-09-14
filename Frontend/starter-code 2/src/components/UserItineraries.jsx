@@ -76,7 +76,7 @@ const UserItineraries = () => {
   userItineraries.forEach((itinerary) => {
     //iterates thru userItineraries array/state
     if (!itinerariesWithActivities[itinerary.itinerary_id]) {
-      //if nothing in current itinerary id of the empty array (which there won't be)...
+      //if nothing in array of particular itinerary id
       itinerariesWithActivities[itinerary.itinerary_id] = {
         //create new object for itinerary id with empty activities array
         ...itinerary,
